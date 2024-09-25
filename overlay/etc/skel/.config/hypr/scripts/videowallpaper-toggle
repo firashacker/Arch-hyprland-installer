@@ -1,0 +1,18 @@
+#!/bin/env bash
+
+WAL="$(ls $HOME/.config/hypr/wallpaper/current/*.mp4|head -n1)"
+SCREEN="HDMI-A-1"
+PID="$HOME/.config/hypr/.cache/mpvwall"
+
+
+if [[ `pidof mpvpaper` ]]; then
+	waypaper --restore
+	killall -q mpvpaper
+fi
+
+if [[ -e $PID ]];then
+	rm $PID
+else
+	touch $PID
+    mpvpaper -o "no-audio loop" $SCREEN $WAL
+fi

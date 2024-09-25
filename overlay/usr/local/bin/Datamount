@@ -1,0 +1,5 @@
+#!/bin/bash
+mkdir $HOME/Data
+echo LABEL=\"Data\"  $HOME/Data        ext4    defaults        0       0 |sudo tee -a /etc/fstab
+#mkdir  $HOME/Network
+#echo "//192.168.88.200/fyst	/home/firas/Network	cifs	user=firas,pass=finororas,file_mode=0777,dir_mode=0777,iocharset=utf8,noperm 0 0"|sudo tee -a /etc/fstab

@@ -1,0 +1,118 @@
+#!/bin/bash
+declare status=false
+declare cpiochange=flase
+
+prompt () {
+	status=flase
+	echo -e "whould you like to (un/install/update/configure) \e[32m [ $1 ] \e[0m on this device ?[N/y]"
+	read answer
+	if [[ "$answer" == "y" || "$answer" == "Y" ]];then
+		status=true
+	fi
+}
+
+
+######
+######
+prompt yay;if [[ $status == true ]] ;then
+
+sudo pacman -S --needed base-devel git
+cd
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si
+cd ..
+sudo rm -r yay
+fi
+
+
+prompt AUR-PACKAGES;if [[ $status == true ]] ;then
+yay
+fi
+
+prompt NVIM-LazyVim;if [[ $status == true ]] ;then
+rm -r ~/.config/nvim
+git clone https://github.com/firashacker/starter.git ~/.config/nvim
+fi
+
+prompt TimeZone;if [[ $status == true ]] ;then
+sudo hwclock --systohc 
+sudo timedatectl set-ntp yes
+fi
+
+
+######
+######
+prompt wine;if [[ $status == true ]] ;then
+
+sudo pacman -S --needed wine-staging giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls \
+mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error \
+lib32-libgpg-error alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib libjpeg-turbo lib32-libjpeg-turbo \
+sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama \
+ncurses lib32-ncurses ocl-icd lib32-ocl-icd libxslt lib32-libxslt libva lib32-libva gtk3 \
+lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader
+echo net.ipv4.tcp_mtu_probing=1 | sudo tee /etc/sysctl.d/custom-mtu-probing.conf
+
+fi
+
+######
+######
+
+#prompt swayfx;if [[ $status == true ]] ;then
+#yay -S swayfx
+#fi
+
+#####
+#####
+
+
+prompt chaotic-aur;if [[ $status == true ]] ;then
+
+	sudo pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com
+	sudo pacman-key --lsign-key 3056513887B78AEB
+	sudo pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst'
+	sudo pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
+	echo -e "[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist"|sudo tee -a /etc/pacman.conf
+
+
+fi
+
+####
+####
+ 
+
+prompt Razer-User;if [[ $status == true ]];then
+	sudo gpasswd -a $USER plugdev
+
+fi
+
+prompt OpenRGB;if [[ $status == true ]];then
+	sudo pacman -S i2c-tools openrgb
+
+fi
+
+prompt Disable-Systemd-CoreDump-Cache;if [[ $status == true ]] ;then
+	echo -e "\nStorage=none"|sudo tee -a /etc/systemd/coredump.conf
+fi
+
+prompt Reduce-systemd-shutdown-Timeout;if [[ $status == true ]] ;then
+	echo -e "\nDefaultTimeoutStopSec=10s" |sudo tee -a /etc/systemd/system.conf
+fi
+
+prompt Enable-VNC-RemoteDesktop;if [[ $status == true ]] ;then
+	~/.config/hypr/scripts/wayvnc_setup
+	sudo pacman -S wayvnc
+fi
+
+prompt Clean-Cache;if [[ $status == true ]] ;then
+
+	echo "cleaning cache folder"
+	sudo rm -r ~/.cache
+
+	echo "clean pacman cache"
+	sudo pacman -Sc
+	sudo rm -r /var/cache/pacman/pkg/*
+
+fi
+
+

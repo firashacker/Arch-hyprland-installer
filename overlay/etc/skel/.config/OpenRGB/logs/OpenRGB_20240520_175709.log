@@ -1,0 +1,162 @@
+    OpenRGB v0.9
+    Commit:  from 
+    Launched: 20240520_175709
+====================================================================================================
+
+0     |Info:    Found file: ram cycle.orp attempting to validate header
+0     |Info:    Valid v4 profile found for ram cycle
+1004  |Info:    ------------------------------------------------------
+1004  |Info:    |               Start device detection               |
+1004  |Info:    ------------------------------------------------------
+1004  |Info:    Initializing HID interfaces: Success
+1011  |Info:    ------------------------------------------------------
+1011  |Info:    |             Detecting I2C interfaces               |
+1011  |Info:    ------------------------------------------------------
+1011  |Info:    Registering I2C interface: /dev/i2c-3 Device 1002:73FF Subsystem: 1462:5022
+1011  |Info:    Registering I2C interface: /dev/i2c-10 Device 0000:0000 Subsystem: 0000:0000
+1011  |Info:    Registering I2C interface: /dev/i2c-1 Device 1002:73FF Subsystem: 1462:5022
+1011  |Warning: [i2c_smbus_linux] Failed to read i2c device PCI device ID
+1011  |Info:    Registering I2C interface: /dev/i2c-8 Device 0000:0000 Subsystem: 0000:0000
+1011  |Info:    Registering I2C interface: /dev/i2c-15 Device 0000:0000 Subsystem: 0000:0000
+1011  |Warning: [i2c_smbus_linux] Failed to read i2c device PCI device ID
+1011  |Info:    Registering I2C interface: /dev/i2c-6 Device 0000:0000 Subsystem: 0000:0000
+1011  |Info:    Registering I2C interface: /dev/i2c-13 Device 0000:0000 Subsystem: 0000:0000
+1011  |Info:    Registering I2C interface: /dev/i2c-4 Device 1002:73FF Subsystem: 1462:5022
+1011  |Info:    Registering I2C interface: /dev/i2c-11 Device 0000:0000 Subsystem: 0000:0000
+1011  |Info:    Registering I2C interface: /dev/i2c-2 Device 1002:73FF Subsystem: 1462:5022
+1011  |Info:    Registering I2C interface: /dev/i2c-0 Device 1002:73FF Subsystem: 1462:5022
+1011  |Info:    Registering I2C interface: /dev/i2c-9 Device 8086:7A23 Subsystem: 1458:5001
+1012  |Warning: [i2c_smbus_linux] Failed to read i2c device PCI device ID
+1012  |Info:    Registering I2C interface: /dev/i2c-7 Device 0000:0000 Subsystem: 0000:0000
+1012  |Info:    Registering I2C interface: /dev/i2c-14 Device 0000:0000 Subsystem: 0000:0000
+1012  |Info:    Registering I2C interface: /dev/i2c-5 Device 1002:73FF Subsystem: 1462:5022
+1012  |Info:    Registering I2C interface: /dev/i2c-12 Device 0000:0000 Subsystem: 0000:0000
+1012  |Info:    ------------------------------------------------------
+1012  |Info:    |               Detecting I2C devices                |
+1012  |Info:    ------------------------------------------------------
+1268  |Info:    [ENE DRAM] Registering RGB controller
+1471  |Info:    [ENE DRAM] Registering RGB controller
+1883  |Info:    ------------------------------------------------------
+1883  |Info:    |               Detecting I2C PCI devices            |
+1883  |Info:    ------------------------------------------------------
+1885  |Info:    ------------------------------------------------------
+1885  |Info:    |               Detecting HID devices                |
+1885  |Info:    ------------------------------------------------------
+2047  |Info:    [B760M DS3H DDR4] Registering RGB controller
+2270  |Info:    [Razer Deathadder Elite] Registering RGB controller
+2270  |Info:    ------------------------------------------------------
+2270  |Info:    |            Detecting libusb HID devices            |
+2270  |Info:    ------------------------------------------------------
+2282  |Info:    ------------------------------------------------------
+2282  |Info:    |              Detecting other devices               |
+2282  |Info:    ------------------------------------------------------
+2285  |Info:    ------------------------------------------------------
+2285  |Info:    |                Detection completed                 |
+2285  |Info:    ------------------------------------------------------
+39822 |Info:    Profile loading: Succeeded for ENE DRAM @ I2C: /dev/i2c-9, address 0x71
+39822 |Info:    Profile loading: Succeeded for ENE DRAM @ I2C: /dev/i2c-9, address 0x73
+39822 |Info:    Profile loading: Succeeded for B760M DS3H DDR4 @ HID: /dev/hidraw6
+39822 |Info:    Profile loading: Succeeded for Razer Deathadder Elite @ HID: /dev/hidraw1
+67613 |Info:    Found file: ram cycle.orp attempting to validate header
+67613 |Info:    Valid v4 profile found for ram cycle
+257119|Info:    ------------------------------------------------------
+257119|Info:    |               Start device detection               |
+257119|Info:    ------------------------------------------------------
+257120|Info:    Initializing HID interfaces: Success
+257124|Info:    ------------------------------------------------------
+257124|Info:    |             Detecting I2C interfaces               |
+257124|Info:    ------------------------------------------------------
+257124|Info:    Registering I2C interface: /dev/i2c-3 Device 1002:73FF Subsystem: 1462:5022
+257124|Info:    Registering I2C interface: /dev/i2c-10 Device 0000:0000 Subsystem: 0000:0000
+257124|Info:    Registering I2C interface: /dev/i2c-1 Device 1002:73FF Subsystem: 1462:5022
+257124|Warning: [i2c_smbus_linux] Failed to read i2c device PCI device ID
+257124|Info:    Registering I2C interface: /dev/i2c-8 Device 0000:0000 Subsystem: 0000:0000
+257124|Info:    Registering I2C interface: /dev/i2c-15 Device 0000:0000 Subsystem: 0000:0000
+257124|Warning: [i2c_smbus_linux] Failed to read i2c device PCI device ID
+257124|Info:    Registering I2C interface: /dev/i2c-6 Device 0000:0000 Subsystem: 0000:0000
+257124|Info:    Registering I2C interface: /dev/i2c-13 Device 0000:0000 Subsystem: 0000:0000
+257124|Info:    Registering I2C interface: /dev/i2c-4 Device 1002:73FF Subsystem: 1462:5022
+257124|Info:    Registering I2C interface: /dev/i2c-11 Device 0000:0000 Subsystem: 0000:0000
+257124|Info:    Registering I2C interface: /dev/i2c-2 Device 1002:73FF Subsystem: 1462:5022
+257124|Info:    Registering I2C interface: /dev/i2c-0 Device 1002:73FF Subsystem: 1462:5022
+257125|Info:    Registering I2C interface: /dev/i2c-9 Device 8086:7A23 Subsystem: 1458:5001
+257125|Warning: [i2c_smbus_linux] Failed to read i2c device PCI device ID
+257125|Info:    Registering I2C interface: /dev/i2c-7 Device 0000:0000 Subsystem: 0000:0000
+257125|Info:    Registering I2C interface: /dev/i2c-14 Device 0000:0000 Subsystem: 0000:0000
+257125|Info:    Registering I2C interface: /dev/i2c-5 Device 1002:73FF Subsystem: 1462:5022
+257125|Info:    Registering I2C interface: /dev/i2c-12 Device 0000:0000 Subsystem: 0000:0000
+257125|Info:    ------------------------------------------------------
+257125|Info:    |               Detecting I2C devices                |
+257125|Info:    ------------------------------------------------------
+257328|Info:    [ENE DRAM] Registering RGB controller
+257528|Info:    [ENE DRAM] Registering RGB controller
+257933|Info:    ------------------------------------------------------
+257933|Info:    |               Detecting I2C PCI devices            |
+257933|Info:    ------------------------------------------------------
+257935|Info:    ------------------------------------------------------
+257935|Info:    |               Detecting HID devices                |
+257935|Info:    ------------------------------------------------------
+258098|Info:    [B760M DS3H DDR4] Registering RGB controller
+258320|Info:    [Razer Deathadder Elite] Registering RGB controller
+258320|Info:    ------------------------------------------------------
+258320|Info:    |            Detecting libusb HID devices            |
+258320|Info:    ------------------------------------------------------
+258327|Info:    ------------------------------------------------------
+258327|Info:    |              Detecting other devices               |
+258327|Info:    ------------------------------------------------------
+258327|Info:    ------------------------------------------------------
+258327|Info:    |                Detection completed                 |
+258327|Info:    ------------------------------------------------------
+300303|Info:    ------------------------------------------------------
+300303|Info:    |               Start device detection               |
+300303|Info:    ------------------------------------------------------
+300303|Info:    Initializing HID interfaces: Success
+300306|Info:    ------------------------------------------------------
+300306|Info:    |             Detecting I2C interfaces               |
+300306|Info:    ------------------------------------------------------
+300306|Info:    Registering I2C interface: /dev/i2c-3 Device 1002:73FF Subsystem: 1462:5022
+300306|Info:    Registering I2C interface: /dev/i2c-10 Device 0000:0000 Subsystem: 0000:0000
+300306|Info:    Registering I2C interface: /dev/i2c-1 Device 1002:73FF Subsystem: 1462:5022
+300306|Warning: [i2c_smbus_linux] Failed to read i2c device PCI device ID
+300306|Info:    Registering I2C interface: /dev/i2c-8 Device 0000:0000 Subsystem: 0000:0000
+300306|Info:    Registering I2C interface: /dev/i2c-15 Device 0000:0000 Subsystem: 0000:0000
+300306|Warning: [i2c_smbus_linux] Failed to read i2c device PCI device ID
+300306|Info:    Registering I2C interface: /dev/i2c-6 Device 0000:0000 Subsystem: 0000:0000
+300306|Info:    Registering I2C interface: /dev/i2c-13 Device 0000:0000 Subsystem: 0000:0000
+300306|Info:    Registering I2C interface: /dev/i2c-4 Device 1002:73FF Subsystem: 1462:5022
+300306|Info:    Registering I2C interface: /dev/i2c-11 Device 0000:0000 Subsystem: 0000:0000
+300325|Info:    Registering I2C interface: /dev/i2c-2 Device 1002:73FF Subsystem: 1462:5022
+300325|Info:    Registering I2C interface: /dev/i2c-0 Device 1002:73FF Subsystem: 1462:5022
+300325|Info:    Registering I2C interface: /dev/i2c-9 Device 8086:7A23 Subsystem: 1458:5001
+300325|Warning: [i2c_smbus_linux] Failed to read i2c device PCI device ID
+300325|Info:    Registering I2C interface: /dev/i2c-7 Device 0000:0000 Subsystem: 0000:0000
+300325|Info:    Registering I2C interface: /dev/i2c-14 Device 0000:0000 Subsystem: 0000:0000
+300325|Info:    Registering I2C interface: /dev/i2c-5 Device 1002:73FF Subsystem: 1462:5022
+300325|Info:    Registering I2C interface: /dev/i2c-12 Device 0000:0000 Subsystem: 0000:0000
+300325|Info:    ------------------------------------------------------
+300325|Info:    |               Detecting I2C devices                |
+300325|Info:    ------------------------------------------------------
+300533|Info:    [ENE DRAM] Registering RGB controller
+300736|Info:    [ENE DRAM] Registering RGB controller
+301143|Info:    ------------------------------------------------------
+301143|Info:    |               Detecting I2C PCI devices            |
+301143|Info:    ------------------------------------------------------
+301145|Info:    ------------------------------------------------------
+301145|Info:    |               Detecting HID devices                |
+301145|Info:    ------------------------------------------------------
+301307|Info:    [B760M DS3H DDR4] Registering RGB controller
+301518|Info:    ------------------------------------------------------
+301518|Info:    |            Detecting libusb HID devices            |
+301518|Info:    ------------------------------------------------------
+301526|Info:    ------------------------------------------------------
+301526|Info:    |              Detecting other devices               |
+301526|Info:    ------------------------------------------------------
+301526|Info:    ------------------------------------------------------
+301526|Info:    |                Detection completed                 |
+301526|Info:    ------------------------------------------------------
+309710|Info:    Found file: ram cycle.orp attempting to validate header
+309710|Info:    Valid v4 profile found for ram cycle
+310403|Info:    Found file: ram cycle.orp attempting to validate header
+310403|Info:    Valid v4 profile found for ram cycle
+310573|Info:    Found file: ram cycle.orp attempting to validate header
+310573|Info:    Valid v4 profile found for ram cycle

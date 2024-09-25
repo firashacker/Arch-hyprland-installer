@@ -1,0 +1,15 @@
+#!/bin/bash
+mkdir -p $HOME/.config/wayvnc
+cd $HOME/.config/wayvnc
+echo "use_relative_paths=true
+address=0.0.0.0
+enable_auth=true
+username=firas
+password=finororas
+private_key_file=tls_key.pem
+certificate_file=tls_cert.pem" > config
+openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes \
+        -keyout tls_key.pem -out tls_cert.pem -subj /CN=localhost \
+        -addext subjectAltName=DNS:localhost,DNS:localhost,IP:127.0.0.1
+
+echo "Install wayvnc !"

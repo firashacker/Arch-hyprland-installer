@@ -1,0 +1,55 @@
+    OpenRGB v0.9
+    Commit:  from 
+    Launched: 20240520_174823
+====================================================================================================
+
+0     |Info:    Found file: ram cycle.orp attempting to validate header
+9     |Info:    Valid v4 profile found for ram cycle
+1017  |Info:    ------------------------------------------------------
+1017  |Info:    |               Start device detection               |
+1017  |Info:    ------------------------------------------------------
+1018  |Info:    Initializing HID interfaces: Success
+1023  |Info:    ------------------------------------------------------
+1023  |Info:    |             Detecting I2C interfaces               |
+1023  |Info:    ------------------------------------------------------
+1023  |Info:    Registering I2C interface: /dev/i2c-3 Device 1002:73FF Subsystem: 1462:5022
+1023  |Info:    Registering I2C interface: /dev/i2c-10 Device 0000:0000 Subsystem: 0000:0000
+1023  |Info:    Registering I2C interface: /dev/i2c-1 Device 1002:73FF Subsystem: 1462:5022
+1023  |Warning: [i2c_smbus_linux] Failed to read i2c device PCI device ID
+1023  |Info:    Registering I2C interface: /dev/i2c-8 Device 0000:0000 Subsystem: 0000:0000
+1023  |Info:    Registering I2C interface: /dev/i2c-15 Device 0000:0000 Subsystem: 0000:0000
+1023  |Warning: [i2c_smbus_linux] Failed to read i2c device PCI device ID
+1023  |Info:    Registering I2C interface: /dev/i2c-6 Device 0000:0000 Subsystem: 0000:0000
+1023  |Info:    Registering I2C interface: /dev/i2c-13 Device 0000:0000 Subsystem: 0000:0000
+1023  |Info:    Registering I2C interface: /dev/i2c-4 Device 1002:73FF Subsystem: 1462:5022
+1023  |Info:    Registering I2C interface: /dev/i2c-11 Device 0000:0000 Subsystem: 0000:0000
+1023  |Info:    Registering I2C interface: /dev/i2c-2 Device 1002:73FF Subsystem: 1462:5022
+1023  |Info:    Registering I2C interface: /dev/i2c-0 Device 1002:73FF Subsystem: 1462:5022
+1023  |Info:    Registering I2C interface: /dev/i2c-9 Device 8086:7A23 Subsystem: 1458:5001
+1023  |Warning: [i2c_smbus_linux] Failed to read i2c device PCI device ID
+1023  |Info:    Registering I2C interface: /dev/i2c-7 Device 0000:0000 Subsystem: 0000:0000
+1024  |Info:    Registering I2C interface: /dev/i2c-14 Device 0000:0000 Subsystem: 0000:0000
+1024  |Info:    Registering I2C interface: /dev/i2c-5 Device 1002:73FF Subsystem: 1462:5022
+1024  |Info:    Registering I2C interface: /dev/i2c-12 Device 0000:0000 Subsystem: 0000:0000
+1024  |Info:    ------------------------------------------------------
+1024  |Info:    |               Detecting I2C devices                |
+1024  |Info:    ------------------------------------------------------
+1287  |Info:    [ENE DRAM] Registering RGB controller
+1489  |Info:    [ENE DRAM] Registering RGB controller
+1894  |Info:    ------------------------------------------------------
+1894  |Info:    |               Detecting I2C PCI devices            |
+1894  |Info:    ------------------------------------------------------
+1895  |Info:    ------------------------------------------------------
+1895  |Info:    |               Detecting HID devices                |
+1895  |Info:    ------------------------------------------------------
+2057  |Info:    [B760M DS3H DDR4] Registering RGB controller
+2281  |Info:    [Razer Deathadder Elite] Registering RGB controller
+2281  |Info:    ------------------------------------------------------
+2281  |Info:    |            Detecting libusb HID devices            |
+2281  |Info:    ------------------------------------------------------
+2343  |Info:    ------------------------------------------------------
+2343  |Info:    |              Detecting other devices               |
+2343  |Info:    ------------------------------------------------------
+2345  |Info:    ------------------------------------------------------
+2345  |Info:    |                Detection completed                 |
+2345  |Info:    ------------------------------------------------------

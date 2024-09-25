@@ -1,0 +1,87 @@
+    OpenRGB v0.9
+    Commit:  from 
+    Launched: 20240519_204906
+====================================================================================================
+
+1004  |Info:    ------------------------------------------------------
+1004  |Info:    |               Start device detection               |
+1004  |Info:    ------------------------------------------------------
+1004  |Info:    Initializing HID interfaces: Success
+1009  |Info:    ------------------------------------------------------
+1009  |Info:    |             Detecting I2C interfaces               |
+1009  |Info:    ------------------------------------------------------
+1012  |Info:    Registering I2C interface: /dev/i2c-3 Device 1002:73FF Subsystem: 1462:5022
+1013  |Info:    Registering I2C interface: /dev/i2c-10 Device 0000:0000 Subsystem: 0000:0000
+1013  |Warning: [i2c_smbus_linux] Failed to read i2c device PCI device ID
+1013  |Info:    Registering I2C interface: /dev/i2c-8 Device 0000:0000 Subsystem: 0000:0000
+1013  |Warning: [i2c_smbus_linux] Failed to read i2c device PCI device ID
+1013  |Info:    Registering I2C interface: /dev/i2c-6 Device 0000:0000 Subsystem: 0000:0000
+1013  |Info:    Registering I2C interface: /dev/i2c-4 Device 1002:73FF Subsystem: 1462:5022
+1013  |Info:    Registering I2C interface: /dev/i2c-2 Device 1002:73FF Subsystem: 1462:5022
+1013  |Info:    Registering I2C interface: /dev/i2c-9 Device 8086:7A23 Subsystem: 1458:5001
+1013  |Info:    Registering I2C interface: /dev/i2c-14 Device 0000:0000 Subsystem: 0000:0000
+1013  |Info:    Registering I2C interface: /dev/i2c-5 Device 1002:73FF Subsystem: 1462:5022
+1013  |Info:    ------------------------------------------------------
+1013  |Info:    |               Detecting I2C devices                |
+1013  |Info:    ------------------------------------------------------
+1316  |Info:    ------------------------------------------------------
+1316  |Info:    |               Detecting I2C PCI devices            |
+1316  |Info:    ------------------------------------------------------
+1317  |Info:    ------------------------------------------------------
+1317  |Info:    |               Detecting HID devices                |
+1317  |Info:    ------------------------------------------------------
+1478  |Info:    [B760M DS3H DDR4] Registering RGB controller
+1490  |Info:    [Razer Deathadder Elite] Registering RGB controller
+1490  |Info:    ------------------------------------------------------
+1490  |Info:    |            Detecting libusb HID devices            |
+1490  |Info:    ------------------------------------------------------
+1504  |Info:    ------------------------------------------------------
+1504  |Info:    |              Detecting other devices               |
+1504  |Info:    ------------------------------------------------------
+1510  |Info:    ------------------------------------------------------
+1510  |Info:    |                Detection completed                 |
+1510  |Info:    ------------------------------------------------------
+1510  |Dialog:  <h2>WARNING:</h2><p>One or more I2C/SMBus interfaces failed to initialize.</p><p>RGB DRAM modules and some motherboards' onboard RGB lighting will not be available without I2C/SMBus.</p><p>On Linux, this is usually because the i2c-dev module is not loaded.  You must load the i2c-dev module along with the correct i2c driver for your motherboard.  This is usually i2c-piix4 for AMD systems and i2c-i801 for Intel systems.</p><p>See <a href='https://help.openrgb.org/'>help.openrgb.org</a> for additional troubleshooting steps if you keep seeing this message.<br></p>
+50167 |Info:    Profile loading: FAILED! for B760M DS3H DDR4 @ HID: /dev/hidraw6
+50167 |Info:    Profile loading: FAILED! for Razer Deathadder Elite @ HID: /dev/hidraw1
+52483 |Info:    Profile loading: FAILED! for B760M DS3H DDR4 @ HID: /dev/hidraw6
+52483 |Info:    Profile loading: FAILED! for Razer Deathadder Elite @ HID: /dev/hidraw1
+99862 |Info:    ------------------------------------------------------
+99862 |Info:    |               Start device detection               |
+99862 |Info:    ------------------------------------------------------
+99862 |Info:    Initializing HID interfaces: Success
+99869 |Info:    ------------------------------------------------------
+99869 |Info:    |             Detecting I2C interfaces               |
+99869 |Info:    ------------------------------------------------------
+99869 |Info:    Registering I2C interface: /dev/i2c-3 Device 1002:73FF Subsystem: 1462:5022
+99869 |Info:    Registering I2C interface: /dev/i2c-10 Device 0000:0000 Subsystem: 0000:0000
+99869 |Warning: [i2c_smbus_linux] Failed to read i2c device PCI device ID
+99869 |Info:    Registering I2C interface: /dev/i2c-8 Device 0000:0000 Subsystem: 0000:0000
+99869 |Warning: [i2c_smbus_linux] Failed to read i2c device PCI device ID
+99869 |Info:    Registering I2C interface: /dev/i2c-6 Device 0000:0000 Subsystem: 0000:0000
+99869 |Info:    Registering I2C interface: /dev/i2c-4 Device 1002:73FF Subsystem: 1462:5022
+99869 |Info:    Registering I2C interface: /dev/i2c-2 Device 1002:73FF Subsystem: 1462:5022
+99869 |Info:    Registering I2C interface: /dev/i2c-9 Device 8086:7A23 Subsystem: 1458:5001
+99869 |Info:    Registering I2C interface: /dev/i2c-14 Device 0000:0000 Subsystem: 0000:0000
+99869 |Info:    Registering I2C interface: /dev/i2c-5 Device 1002:73FF Subsystem: 1462:5022
+99869 |Info:    ------------------------------------------------------
+99869 |Info:    |               Detecting I2C devices                |
+99869 |Info:    ------------------------------------------------------
+100170|Info:    ------------------------------------------------------
+100170|Info:    |               Detecting I2C PCI devices            |
+100170|Info:    ------------------------------------------------------
+100171|Info:    ------------------------------------------------------
+100171|Info:    |               Detecting HID devices                |
+100171|Info:    ------------------------------------------------------
+100332|Info:    [B760M DS3H DDR4] Registering RGB controller
+100343|Info:    [Razer Deathadder Elite] Registering RGB controller
+100343|Info:    ------------------------------------------------------
+100343|Info:    |            Detecting libusb HID devices            |
+100343|Info:    ------------------------------------------------------
+100351|Info:    ------------------------------------------------------
+100351|Info:    |              Detecting other devices               |
+100351|Info:    ------------------------------------------------------
+100352|Info:    ------------------------------------------------------
+100352|Info:    |                Detection completed                 |
+100352|Info:    ------------------------------------------------------
+100352|Dialog:  <h2>WARNING:</h2><p>One or more I2C/SMBus interfaces failed to initialize.</p><p>RGB DRAM modules and some motherboards' onboard RGB lighting will not be available without I2C/SMBus.</p><p>On Linux, this is usually because the i2c-dev module is not loaded.  You must load the i2c-dev module along with the correct i2c driver for your motherboard.  This is usually i2c-piix4 for AMD systems and i2c-i801 for Intel systems.</p><p>See <a href='https://help.openrgb.org/'>help.openrgb.org</a> for additional troubleshooting steps if you keep seeing this message.<br></p>

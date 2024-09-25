@@ -1,0 +1,107 @@
+    OpenRGB v0.9
+    Commit:  from 
+    Launched: 20240520_175416
+====================================================================================================
+
+0     |Info:    Found file: ram cycle.orp attempting to validate header
+1     |Info:    Valid v4 profile found for ram cycle
+1006  |Info:    ------------------------------------------------------
+1006  |Info:    |               Start device detection               |
+1006  |Info:    ------------------------------------------------------
+1006  |Info:    Initializing HID interfaces: Success
+1010  |Info:    ------------------------------------------------------
+1010  |Info:    |             Detecting I2C interfaces               |
+1010  |Info:    ------------------------------------------------------
+1010  |Info:    Registering I2C interface: /dev/i2c-3 Device 1002:73FF Subsystem: 1462:5022
+1010  |Info:    Registering I2C interface: /dev/i2c-10 Device 0000:0000 Subsystem: 0000:0000
+1010  |Info:    Registering I2C interface: /dev/i2c-1 Device 1002:73FF Subsystem: 1462:5022
+1010  |Warning: [i2c_smbus_linux] Failed to read i2c device PCI device ID
+1010  |Info:    Registering I2C interface: /dev/i2c-8 Device 0000:0000 Subsystem: 0000:0000
+1010  |Info:    Registering I2C interface: /dev/i2c-15 Device 0000:0000 Subsystem: 0000:0000
+1011  |Warning: [i2c_smbus_linux] Failed to read i2c device PCI device ID
+1011  |Info:    Registering I2C interface: /dev/i2c-6 Device 0000:0000 Subsystem: 0000:0000
+1011  |Info:    Registering I2C interface: /dev/i2c-13 Device 0000:0000 Subsystem: 0000:0000
+1011  |Info:    Registering I2C interface: /dev/i2c-4 Device 1002:73FF Subsystem: 1462:5022
+1011  |Info:    Registering I2C interface: /dev/i2c-11 Device 0000:0000 Subsystem: 0000:0000
+1011  |Info:    Registering I2C interface: /dev/i2c-2 Device 1002:73FF Subsystem: 1462:5022
+1011  |Info:    Registering I2C interface: /dev/i2c-0 Device 1002:73FF Subsystem: 1462:5022
+1011  |Info:    Registering I2C interface: /dev/i2c-9 Device 8086:7A23 Subsystem: 1458:5001
+1011  |Warning: [i2c_smbus_linux] Failed to read i2c device PCI device ID
+1011  |Info:    Registering I2C interface: /dev/i2c-7 Device 0000:0000 Subsystem: 0000:0000
+1011  |Info:    Registering I2C interface: /dev/i2c-14 Device 0000:0000 Subsystem: 0000:0000
+1011  |Info:    Registering I2C interface: /dev/i2c-5 Device 1002:73FF Subsystem: 1462:5022
+1011  |Info:    Registering I2C interface: /dev/i2c-12 Device 0000:0000 Subsystem: 0000:0000
+1011  |Info:    ------------------------------------------------------
+1011  |Info:    |               Detecting I2C devices                |
+1011  |Info:    ------------------------------------------------------
+1265  |Info:    [ENE DRAM] Registering RGB controller
+1470  |Info:    [ENE DRAM] Registering RGB controller
+1885  |Info:    ------------------------------------------------------
+1885  |Info:    |               Detecting I2C PCI devices            |
+1885  |Info:    ------------------------------------------------------
+1887  |Info:    ------------------------------------------------------
+1887  |Info:    |               Detecting HID devices                |
+1887  |Info:    ------------------------------------------------------
+2050  |Info:    [B760M DS3H DDR4] Registering RGB controller
+2272  |Info:    [Razer Deathadder Elite] Registering RGB controller
+2272  |Info:    ------------------------------------------------------
+2272  |Info:    |            Detecting libusb HID devices            |
+2272  |Info:    ------------------------------------------------------
+2283  |Info:    ------------------------------------------------------
+2283  |Info:    |              Detecting other devices               |
+2283  |Info:    ------------------------------------------------------
+2286  |Info:    ------------------------------------------------------
+2286  |Info:    |                Detection completed                 |
+2286  |Info:    ------------------------------------------------------
+24914 |Info:    Found file: ram cycle.orp attempting to validate header
+24914 |Info:    Valid v4 profile found for ram cycle
+25525 |Info:    Found file: ram cycle.orp attempting to validate header
+25525 |Info:    Valid v4 profile found for ram cycle
+26349 |Info:    Found file: ram cycle.orp attempting to validate header
+26349 |Info:    Valid v4 profile found for ram cycle
+29544 |Info:    Found file: ram cycle.orp attempting to validate header
+29544 |Info:    Valid v4 profile found for ram cycle
+35016 |Info:    Profile loading: Succeeded for ENE DRAM @ I2C: /dev/i2c-9, address 0x71
+35016 |Info:    Profile loading: Succeeded for ENE DRAM @ I2C: /dev/i2c-9, address 0x73
+35016 |Info:    Profile loading: Succeeded for B760M DS3H DDR4 @ HID: /dev/hidraw6
+35016 |Info:    Profile loading: Succeeded for Razer Deathadder Elite @ HID: /dev/hidraw1
+62226 |Info:    Found file: ram cycle.orp attempting to validate header
+62226 |Info:    Valid v4 profile found for ram cycle
+63224 |Info:    Found file: ram cycle.orp attempting to validate header
+63224 |Info:    Valid v4 profile found for ram cycle
+63438 |Info:    Found file: ram cycle.orp attempting to validate header
+63438 |Info:    Valid v4 profile found for ram cycle
+63614 |Info:    Found file: ram cycle.orp attempting to validate header
+63614 |Info:    Valid v4 profile found for ram cycle
+63795 |Info:    Found file: ram cycle.orp attempting to validate header
+63795 |Info:    Valid v4 profile found for ram cycle
+63962 |Info:    Found file: ram cycle.orp attempting to validate header
+63962 |Info:    Valid v4 profile found for ram cycle
+64129 |Info:    Found file: ram cycle.orp attempting to validate header
+64129 |Info:    Valid v4 profile found for ram cycle
+66441 |Info:    Found file: ram cycle.orp attempting to validate header
+66441 |Info:    Valid v4 profile found for ram cycle
+66627 |Info:    Found file: ram cycle.orp attempting to validate header
+66627 |Info:    Valid v4 profile found for ram cycle
+66790 |Info:    Found file: ram cycle.orp attempting to validate header
+66790 |Info:    Valid v4 profile found for ram cycle
+66966 |Info:    Found file: ram cycle.orp attempting to validate header
+66966 |Info:    Valid v4 profile found for ram cycle
+69806 |Info:    Found file: ram cycle.orp attempting to validate header
+69806 |Info:    Valid v4 profile found for ram cycle
+83235 |Info:    Found file: ram cycle.orp attempting to validate header
+83235 |Info:    Valid v4 profile found for ram cycle
+83285 |Info:    Found file: ram cycle.orp attempting to validate header
+83285 |Info:    Valid v4 profile found for ram cycle
+83517 |Info:    Found file: ram cycle.orp attempting to validate header
+83517 |Info:    Valid v4 profile found for ram cycle
+83713 |Info:    Found file: ram cycle.orp attempting to validate header
+83713 |Info:    Valid v4 profile found for ram cycle
+83883 |Info:    Found file: ram cycle.orp attempting to validate header
+83883 |Info:    Valid v4 profile found for ram cycle
+84043 |Info:    Found file: ram cycle.orp attempting to validate header
+84043 |Info:    Valid v4 profile found for ram cycle
+84226 |Info:    Found file: ram cycle.orp attempting to validate header
+84226 |Info:    Valid v4 profile found for ram cycle
+112119|Info:    Found file: ram cycle.orp attempting to validate header
+112119|Info:    Valid v4 profile found for ram cycle

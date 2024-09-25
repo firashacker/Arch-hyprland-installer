@@ -1,0 +1,2 @@
+#!/bin/bash
+~/.config/hypr/scripts/${1} ${2} ${3} ${4}

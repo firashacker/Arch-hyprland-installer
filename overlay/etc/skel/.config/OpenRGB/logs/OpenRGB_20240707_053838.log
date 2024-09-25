@@ -1,0 +1,60 @@
+    OpenRGB v0.9
+    Commit:  from 
+    Launched: 20240707_053838
+====================================================================================================
+
+0     |Info:    Found file: ram cycle.orp attempting to validate header
+0     |Info:    Valid v4 profile found for ram cycle
+1002  |Info:    ------------------------------------------------------
+1002  |Info:    |               Start device detection               |
+1002  |Info:    ------------------------------------------------------
+1003  |Info:    Initializing HID interfaces: Success
+1007  |Info:    ------------------------------------------------------
+1007  |Info:    |             Detecting I2C interfaces               |
+1007  |Info:    ------------------------------------------------------
+1009  |Info:    Registering I2C interface: /dev/i2c-3 Device 1002:73FF Subsystem: 1462:5022
+1009  |Info:    Registering I2C interface: /dev/i2c-10 Device 0000:0000 Subsystem: 0000:0000
+1009  |Info:    Registering I2C interface: /dev/i2c-1 Device 1002:73FF Subsystem: 1462:5022
+1009  |Warning: [i2c_smbus_linux] Failed to read i2c device PCI device ID
+1009  |Info:    Registering I2C interface: /dev/i2c-8 Device 0000:0000 Subsystem: 0000:0000
+1009  |Info:    Registering I2C interface: /dev/i2c-15 Device 0000:0000 Subsystem: 0000:0000
+1009  |Warning: [i2c_smbus_linux] Failed to read i2c device PCI device ID
+1009  |Info:    Registering I2C interface: /dev/i2c-6 Device 0000:0000 Subsystem: 0000:0000
+1009  |Info:    Registering I2C interface: /dev/i2c-13 Device 0000:0000 Subsystem: 0000:0000
+1009  |Info:    Registering I2C interface: /dev/i2c-4 Device 1002:73FF Subsystem: 1462:5022
+1009  |Info:    Registering I2C interface: /dev/i2c-11 Device 0000:0000 Subsystem: 0000:0000
+1009  |Info:    Registering I2C interface: /dev/i2c-2 Device 1002:73FF Subsystem: 1462:5022
+1009  |Info:    Registering I2C interface: /dev/i2c-0 Device 1002:73FF Subsystem: 1462:5022
+1009  |Info:    Registering I2C interface: /dev/i2c-9 Device 8086:7A23 Subsystem: 1458:5001
+1009  |Warning: [i2c_smbus_linux] Failed to read i2c device PCI device ID
+1009  |Info:    Registering I2C interface: /dev/i2c-7 Device 0000:0000 Subsystem: 0000:0000
+1009  |Info:    Registering I2C interface: /dev/i2c-14 Device 0000:0000 Subsystem: 0000:0000
+1009  |Info:    Registering I2C interface: /dev/i2c-5 Device 1002:73FF Subsystem: 1462:5022
+1009  |Info:    Registering I2C interface: /dev/i2c-12 Device 0000:0000 Subsystem: 0000:0000
+1009  |Info:    ------------------------------------------------------
+1009  |Info:    |               Detecting I2C devices                |
+1009  |Info:    ------------------------------------------------------
+1207  |Info:    [ENE DRAM] Registering RGB controller
+1405  |Info:    [ENE DRAM] Registering RGB controller
+1810  |Info:    ------------------------------------------------------
+1810  |Info:    |               Detecting I2C PCI devices            |
+1810  |Info:    ------------------------------------------------------
+1813  |Info:    ------------------------------------------------------
+1813  |Info:    |               Detecting HID devices                |
+1813  |Info:    ------------------------------------------------------
+1974  |Info:    [B760M DS3H DDR4] Registering RGB controller
+2186  |Info:    ------------------------------------------------------
+2186  |Info:    |            Detecting libusb HID devices            |
+2186  |Info:    ------------------------------------------------------
+2201  |Info:    ------------------------------------------------------
+2201  |Info:    |              Detecting other devices               |
+2201  |Info:    ------------------------------------------------------
+2203  |Info:    ------------------------------------------------------
+2203  |Info:    |                Detection completed                 |
+2203  |Info:    ------------------------------------------------------
+6063  |Info:    Profile loading: Succeeded for ENE DRAM @ I2C: /dev/i2c-9, address 0x71
+6063  |Info:    Profile loading: Succeeded for ENE DRAM @ I2C: /dev/i2c-9, address 0x73
+6063  |Info:    Profile loading: Succeeded for B760M DS3H DDR4 @ HID: /dev/hidraw6
+6315  |Info:    Profile loading: Succeeded for ENE DRAM @ I2C: /dev/i2c-9, address 0x71
+6315  |Info:    Profile loading: Succeeded for ENE DRAM @ I2C: /dev/i2c-9, address 0x73
+6315  |Info:    Profile loading: Succeeded for B760M DS3H DDR4 @ HID: /dev/hidraw6

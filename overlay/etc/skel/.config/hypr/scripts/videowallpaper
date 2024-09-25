@@ -1,0 +1,15 @@
+#!/bin/env bash
+
+WAL="$(ls $HOME/.config/hypr/wallpaper/current/*.mp4|head -n1)"
+SCREEN="HDMI-A-1"
+
+if [[ ! `pidof mpvpaper` ]]; then
+	mpvpaper -o "no-audio loop" $SCREEN $WAL
+	# simlink video wallpaper dir
+	if [[ ! -f "$HOME/Videos/wallpaper" ]];then
+    	ln -s ~/.config/hypr/wallpaper/ ~/Videos &
+	fi
+else
+	waypaper --restore
+	killall -q mpvpaper
+fi

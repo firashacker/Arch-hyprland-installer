@@ -1,0 +1,6 @@
+#!/bin/bash
+#if [[ -e $(which google-chrome-stable) ]];then
+#	google-chrome-stable
+#else
+	firefox
+#fi
