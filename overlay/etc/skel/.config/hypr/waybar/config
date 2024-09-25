@@ -29,7 +29,7 @@
 },
 
   "custom/power": {
-	"format": "<span font='14'></span>",
+	"format": "<span font='12'></span>",
     "interval": "once",
     "on-click": "bash -c 'if [[ ! `pidof rofi` ]];then $HOME/.config/hypr/scripts/rofi_powermenu;else killall -q rofi;fi'",
     "tooltip": false
