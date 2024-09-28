@@ -22,7 +22,7 @@ git clone https://aur.archlinux.org/yay.git
 cd yay
 makepkg -si
 cd ..
-sudo rm -r yay
+rm -rf yay
 fi
 
 
@@ -30,8 +30,16 @@ prompt AUR-PACKAGES;if [[ $status == true ]] ;then
 yay
 fi
 
-prompt NVIM-LazyVim;if [[ $status == true ]] ;then
-rm -r ~/.config/nvim
+prompt TMUX;if [[ $status == true ]] ;then
+sudo pacman -S tmux
+rm -rf ~/.config/tmux
+git clone https://github.com/firashacker/tmux-config.git ~/.config/tmux
+fi
+
+
+prompt NVIM-nvchad;if [[ $status == true ]] ;then
+sudo pacman -S nvim
+rm -rf ~/.config/nvim
 git clone https://github.com/firashacker/starter.git ~/.config/nvim
 fi
 
@@ -107,7 +115,7 @@ fi
 prompt Clean-Cache;if [[ $status == true ]] ;then
 
 	echo "cleaning cache folder"
-	sudo rm -r ~/.cache
+	rm -rf ~/.cache/*
 
 	echo "clean pacman cache"
 	sudo pacman -Sc

@@ -293,6 +293,23 @@ if [ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
     ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#999'
 fi
 
+
+# tmux
+
+if [[ -f "$(which tmux)" ]];then
+# open terminal in tmux
+  if [ "$TMUX" = "" ]; then tmux; fi
+#quit if tmux exit
+  if [[ -z $TMUX ]];then
+      exit
+  fi
+  
+  kill-tmux-unattached-sessions(){
+    tmux ls | awk 'BEGIN{FS=":"}!/attached/{print $1}' | xargs -n 1 tmux kill-ses -t
+  }
+
+  alias tmuxkill='kill-tmux-unattached-sessions'
+fi
 #if [ -e $(which fzf) ];then
 #  source < (fzf --zsh)
 #fi
@@ -305,7 +322,7 @@ declare -i cols=$(tput cols)
 #alias mpc='mpc --host=/tmp/mpd.socket'
 
 
-if [ -f /usr/bin/neofetch ];then
+if [ -f "$(which neofetch)" ];then
 	if (( $cols>40 ));then
 		#if [ -f /usr/bin/lolcat ];then
 		#	neofetch|lolcat
@@ -314,6 +331,5 @@ if [ -f /usr/bin/neofetch ];then
 		#fi
 	fi
 fi
-
 
 #enable-pip
