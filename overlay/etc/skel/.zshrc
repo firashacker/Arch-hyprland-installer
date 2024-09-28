@@ -303,9 +303,14 @@ if [[ -f "$(which tmux)" ]];then
   if [[ -z $TMUX ]];then
       exit
   fi
-  
   kill-tmux-unattached-sessions(){
-    tmux ls | awk 'BEGIN{FS=":"}!/attached/{print $1}' | xargs -n 1 tmux kill-ses -t
+    tmux ls 
+    echo "kill sessions [Y/n]?"
+    read Input
+    if [ "$Input" != "n" ] && [ "$Input" != "N" ];then
+      tmux ls | awk 'BEGIN{FS=":"}!/attached/{print $1}' | xargs -n 1 tmux kill-ses -t
+      tmux ls
+    fi
   }
 
   alias tmuxkill='kill-tmux-unattached-sessions'
