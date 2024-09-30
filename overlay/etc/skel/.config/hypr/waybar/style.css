@@ -43,6 +43,11 @@ ALTWHITE = #ECEFF4
   box-shadow: none;
 }
 
+#mpd {
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
 #waybar {
   color: @foreground;
   background: @background;

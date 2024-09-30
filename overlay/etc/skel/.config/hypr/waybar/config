@@ -5,13 +5,55 @@
     // "width": 1280, // Waybar width
     "spacing": 4, // Gaps between modules (4px)
     // Choose the order of the modules
-    "modules-left": ["custom/launcher","hyprland/workspaces#roman", "idle_inhibitor", "custom/separator#2" ,"hyprland/window", "custom/separator#3"  ],
-//    "modules-left": ["custom/launcher","hyprland/workspaces#icons", "idle_inhibitor","custom/winvm", "custom/separator#2" ,"hyprland/window", "custom/separator#3"  ],
-    "modules-center": ["mpd#2", "mpd#3", "mpd#4", "mpd"],
-    "modules-right": ["pulseaudio","custom/separator","bluetooth" ,"custom/separator", "network","custom/separator", "clock#2", "tray", "custom/power"],
+    "modules-left": ["custom/launcher", "group/left"  ],
+    "modules-center": ["group/mpd"],
+    "modules-right": ["group/right"],
 
 
     // Modules configuration
+
+
+
+  "group/mpd":{
+    "orientation": "horizontal",
+    "modules": [
+      "mpd#2",
+      "mpd#3",
+      "mpd#4",
+      "mpd",
+    ],
+  },
+
+  "group/right":{
+    "orientation": "horizontal",
+    "modules":  [
+      "pulseaudio",
+      "custom/separator",
+      "bluetooth" ,
+      "custom/separator",
+      "network",
+      "custom/separator",
+      "clock#2",
+      "tray",
+      "custom/power"
+      ],
+
+  },
+
+
+  "group/left":{
+    "orientation": "horizontal",
+    "modules": [
+    //"custom/launcher",
+    "hyprland/workspaces#roman",
+    "idle_inhibitor",
+    //"custom/winvm",
+    "custom/separator#2" ,
+    "hyprland/window",
+    "custom/separator#3",
+    ],
+    
+  },
 
   "custom/launcher": {
 	"format": "<span font='14'></span>",
