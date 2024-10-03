@@ -5,7 +5,7 @@
 MOUNTPOINT="/mnt"
 
 #####################
-## Your TimeZone  ###
+## Your TIMEZONE  ###
 #####################
 TIMEZONE="Asia/Jerusalem"
 
@@ -376,7 +376,7 @@ ttf-nerd-fonts-symbols-mono
 
 
 
-#### sync timezone before installation ####
+#### sync TIMEZONE before installation ####
 
 preInstall(){
   hwclock --systohc
@@ -418,23 +418,23 @@ ensureSuccess(){
 
 installLinux(){
   echo -e "\e[32mInstalling Linux Base ! ... \e[0m"
-  ensuresuccess pacstrap -k ${MOUNTPOINT} base linux linux-headers linux-firmware grub efibootmgr
+  ensureSuccess pacstrap -K ${MOUNTPOINT} base linux linux-headers linux-firmware grub efibootmgr
   genfstab -u ${MOUNTPOINT} > ${MOUNTPOINT}/etc/fstab
   rm -r ${MOUNTPOINT}/etc/localtime
-  ensuresuccess ln -sf /usr/share/zoneinfo/${timezone} ${MOUNTPOINT}/etc/localtime
+  ensureSuccess ln -sf /usr/share/zoneinfo/${TIMEZONE} ${MOUNTPOINT}/etc/localtime
   arch-chroot ${MOUNTPOINT} hwclock --systohc
   arch-chroot ${MOUNTPOINT} passwd
 }
 
-installapps(){
-  echo -e "\e[32minstalling desktop and apps ! ... \e[0m"
-  ensuresuccess pacstrap -k ${MOUNTPOINT}  ${packages_base}  ${display_manager} ${hypr} ${apps} ${fonts}
-  ensuresuccess arch-chroot ${MOUNTPOINT} pacman-key --init
-  ensuresuccess arch-chroot ${MOUNTPOINT} pacman-key --populate
+installApps(){
+  echo -e "\e[32mInstalling desktop and apps ! ... \e[0m"
+  ensureSuccess pacstrap -K ${MOUNTPOINT}  ${PACKAGES_BASE}  ${DISPLAY_MANAGER} ${HYPR} ${APPS} ${FONTS}
+  ensureSuccess arch-chroot ${MOUNTPOINT} pacman-key --init
+  ensureSuccess arch-chroot ${MOUNTPOINT} pacman-key --populate
 
 }
 
-installlocal(){
+installLocal(){
   echo -e "\e[32mInstalling local packages ! ... \e[0m"
   ensureSuccess pacstrap -KU ${MOUNTPOINT} $(pwd)/packages/*
 }
@@ -472,9 +472,12 @@ setHostName(){
 setGrub(){
   echo -e "\e[32mSetting grub boot loader ! ... \e[0m"
   ensureSuccess arch-chroot ${MOUNTPOINT} grub-install
-  ensureSuccess arch-chroot ${MOUNTPOINT} mkinitcpio -P
+  arch-chroot ${MOUNTPOINT} mkinitcpio -P
   ensureSuccess arch-chroot ${MOUNTPOINT} grub-mkconfig -o /boot/grub/grub.cfg
+}
 
+
+setServices(){
   echo -e "\e[32mSetting systemd services ! ... \e[0m"
   arch-chroot ${MOUNTPOINT} systemctl enable sddm.service
   arch-chroot ${MOUNTPOINT} systemctl enable NetworkManager.service
@@ -493,7 +496,7 @@ runPostInstall(){
 }
 
 
-# preInstall installAll copyOverlay setLocales setKernelModules setHostName setGrub setUser runPostInstall
+# preInstall installAll copyOverlay setLocales setKernelModules setHostName setGrub setServices setUser runPostInstall
 
 preInstall
 installAll
@@ -502,5 +505,6 @@ setLocales
 setKernelModules
 setHostName
 setGrub
+setServices
 setUser
 runPostInstall
