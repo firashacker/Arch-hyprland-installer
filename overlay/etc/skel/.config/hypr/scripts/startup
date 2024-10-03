@@ -36,7 +36,7 @@ fi
 
 
 #vnc remote desktop
-~/.config/hypr/scripts/vnc &
+#~/.config/hypr/scripts/vnc &
 
 
 
