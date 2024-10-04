@@ -458,7 +458,7 @@ installApps(){
 
 installLocal(){
   echo -e "\e[32mInstalling local packages ! ... \e[0m"
-  ensureSuccess pacstrap -KU ${MOUNTPOINT} $(pwd)/packages/*
+  ensureSuccess pacstrap -KU ${MOUNTPOINT} $(pwd)/localpkgs/*
 }
 
 installAll(){
