@@ -419,16 +419,20 @@ ensureSuccess(){
 installLinux(){
   echo -e "\e[32mInstalling Linux Base ! ... \e[0m"
   ensureSuccess pacstrap -K ${MOUNTPOINT} base linux linux-headers linux-firmware grub efibootmgr
-  genfstab -u ${MOUNTPOINT} > ${MOUNTPOINT}/etc/fstab
+  genfstab -U ${MOUNTPOINT} > ${MOUNTPOINT}/etc/fstab
   rm -r ${MOUNTPOINT}/etc/localtime
   ensureSuccess ln -sf /usr/share/zoneinfo/${TIMEZONE} ${MOUNTPOINT}/etc/localtime
+  echo "FONT=default8x16" > ${MOUNTPOINT}/etc/vconsole.conf
   arch-chroot ${MOUNTPOINT} hwclock --systohc
   arch-chroot ${MOUNTPOINT} passwd
 }
 
+
+#### Available Packages: PACKAGES_BASE DISPLAY_MANAGER HYPR APPS FONTS ####
+
 installApps(){
   echo -e "\e[32mInstalling desktop and apps ! ... \e[0m"
-  ensureSuccess pacstrap -K ${MOUNTPOINT}  ${PACKAGES_BASE}  ${DISPLAY_MANAGER} ${HYPR} ${APPS} ${FONTS}
+  ensureSuccess pacstrap -K ${MOUNTPOINT} ${PACKAGES_BASE[*]} ${DISPLAY_MANAGER[*]} ${HYPR[*]} ${FONTS[*]} ${APPS[*]}
   ensureSuccess arch-chroot ${MOUNTPOINT} pacman-key --init
   ensureSuccess arch-chroot ${MOUNTPOINT} pacman-key --populate
 
