@@ -17,7 +17,7 @@ prompt () {
 
 
 prompt TMUX;if [[ $status == true ]] ;then
-sudo pacman -S tmux
+sudo pacman -S tmux --noconfirm
 rm -rf ~/.config/tmux
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 git clone https://github.com/firashacker/tmux-config.git ~/.config/tmux
@@ -25,7 +25,7 @@ fi
 
 
 prompt NVIM-nvchad;if [[ $status == true ]] ;then
-sudo pacman -S nvim
+sudo pacman -S nvim --noconfirm
 rm -rf ~/.config/nvim
 git clone https://github.com/firashacker/starter.git ~/.config/nvim
 fi
@@ -82,7 +82,7 @@ prompt Razer-User;if [[ $status == true ]];then
 fi
 
 prompt OpenRGB;if [[ $status == true ]];then
-	sudo pacman -S i2c-tools openrgb
+	sudo pacman -S i2c-tools openrgb --noconfirm
 
 fi
 
@@ -96,7 +96,7 @@ fi
 
 prompt Enable-VNC-RemoteDesktop;if [[ $status == true ]] ;then
 	~/.config/hypr/scripts/wayvnc_setup
-	sudo pacman -S wayvnc
+	sudo pacman -S wayvnc --noconfirm
 fi
 
 prompt Clean-Cache;if [[ $status == true ]] ;then
@@ -105,6 +105,7 @@ prompt Clean-Cache;if [[ $status == true ]] ;then
 	rm -rf ~/.cache/*
 
 	echo "clean pacman cache"
+  sudo pacman -Runs $(pacman -Qtqd)
 	sudo pacman -Sc
 	sudo rm -r /var/cache/pacman/pkg/*
 

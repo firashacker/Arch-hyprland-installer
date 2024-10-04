@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo pacman -S --needed base-devel git
+sudo pacman -S --needed base-devel git --noconfirm
 if (( $? != 0 ));then exit 2 ;fi
 cd
 rm -rf yay
