@@ -1,0 +1,15 @@
+#!/bin/bash
+
+sudo pacman -S --needed base-devel git
+if (( $? != 0 ));then exit 2 ;fi
+cd
+rm -rf yay
+git clone https://aur.archlinux.org/yay.git
+if (( $? != 0 ));then exit 2 ;fi
+cd yay
+makepkg -si
+if (( $? != 0 ));then exit 2 ;fi
+cd ..
+rm -rf yay
+
+

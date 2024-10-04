@@ -14,21 +14,7 @@ prompt () {
 
 ######
 ######
-prompt yay;if [[ $status == true ]] ;then
 
-sudo pacman -S --needed base-devel git
-cd
-git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -si
-cd ..
-rm -rf yay
-fi
-
-
-prompt AUR-PACKAGES;if [[ $status == true ]] ;then
-yay
-fi
 
 prompt TMUX;if [[ $status == true ]] ;then
 sudo pacman -S tmux

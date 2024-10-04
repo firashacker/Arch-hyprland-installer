@@ -48,20 +48,21 @@ getHelp(){
 
 
   echo -e "\nUSAGE:"
-  echo -e "\e[32msudo ./install.sh -U [YOUR USERNAME] -H [YOUR HOSTNAME]\e[0m"
+  echo -e "\e[32msudo ./install.sh -U [YOUR USERNAME] -P [YOUR PASSWORD] -H [YOUR HOSTNAME]\e[0m"
 
   exit 0
 }
 
 
 
-while getopts ":U:H:T:M:" flag
+while getopts ":U:H:T:M:P:" flag
 do
     case "${flag}" in
         U) User=${OPTARG};;
         H) HostName=${OPTARG};;
         M) MOUNTPOINT=${OPTARG};;
         T) TIMEZONE=${OPTARG};;
+        P) Password=${OPTARG};;
         *) getHelp;;
     esac
 done
@@ -69,11 +70,16 @@ done
 if [ -z "${User}" ];then
   echo -e "\e[31mErr:please specify User Name \"\-U username \"\e[0m "
   exit -1
-else if [ -z "${HostName}" ];then
-  echo -e "\e[31mErr:please specify Host Name \"\-H hostname \"\e[0m "
-fi
 fi
 
+if [ -z "${HostName}" ];then
+  echo -e "\e[31mErr:please specify Host Name \"\-H hostname \"\e[0m "
+  exit -1
+fi
+
+if [ -z "${Password}" ];then
+  echo -e "\e[31mErr:please specify User Password \"\-P password \"\e[0m "
+fi
 
 
 
@@ -137,7 +143,6 @@ networkmanager
 neofetch 
 ntfs-3g 
 nvme-cli 
-opencl-amd 
 openssh 
 os-prober 
 packagekit-qt5 
@@ -205,9 +210,6 @@ hyprland
 
 #### hyprland wallpaper engine ####
 hyprpaper 
-
-#### GUI wallpaper setter for wayland ####
-waypaper 
 
 #### hyprland lockscreen daemon ####
 hyprlock 
@@ -309,7 +311,6 @@ goverlay
 mangohud 
 steam
 obs-studio 
-obs-vaapi 
 
 #### disk manager ####
 gparted 
@@ -373,6 +374,19 @@ ttf-nerd-fonts-symbols-mono
 )
 
 
+AUR=(
+obs-vkcapture-git 
+libopenrazer 
+mpvpaper 
+polychromatic 
+rtl8812au-aircrack-ng-dkms-git 
+upd72020x-fw 
+wd719x-firmware 
+opencl-amd 
+waypaper 
+obs-vaapi 
+)
+
 
 
 
@@ -424,7 +438,9 @@ installLinux(){
   ensureSuccess ln -sf /usr/share/zoneinfo/${TIMEZONE} ${MOUNTPOINT}/etc/localtime
   echo "FONT=default8x16" > ${MOUNTPOINT}/etc/vconsole.conf
   arch-chroot ${MOUNTPOINT} hwclock --systohc
-  arch-chroot ${MOUNTPOINT} passwd
+  echo -e "\e[32mSetting Password for root ! \e[0m"
+  #arch-chroot ${MOUNTPOINT} passwd
+  arch-chroot ${MOUNTPOINT} bash -c "echo -e \"${Password}\n${Password}\n\"|passwd"
 }
 
 
@@ -437,6 +453,8 @@ installApps(){
   ensureSuccess arch-chroot ${MOUNTPOINT} pacman-key --populate
 
 }
+
+
 
 installLocal(){
   echo -e "\e[32mInstalling local packages ! ... \e[0m"
@@ -491,16 +509,37 @@ setServices(){
 setUser(){
   echo -e "\e[32mAdding your USER ! ... \e[0m"
   arch-chroot ${MOUNTPOINT} useradd -m -G wheel -s /bin/zsh ${User} --home /home/${User}
-  sed -i 's/^#\s*\(%wheel\s\+ALL=(ALL:ALL)\s\+ALL\)/\1/' ${MOUNTPOINT}/etc/sudoers
-  arch-chroot ${MOUNTPOINT} passwd ${User}
+  #sed -i 's/^#\s*\(%wheel\s\+ALL=(ALL:ALL)\s\+ALL\)/\1/' ${MOUNTPOINT}/etc/sudoers
+  mkdir -p ${MOUNTPOINT}/etc/sudoers.d/
+  echo "%wheel ALL=(ALL:ALL) NOPASSWD: ALL" > ${MOUNTPOINT}/etc/sudoers.d/wheel
+
+  echo -e "\e[32mSetting Password for USER:${User} ! \e[0m"
+  #arch-chroot ${MOUNTPOINT} "passwd ${User}"
+  arch-chroot ${MOUNTPOINT} bash -c "echo -e \"${Password}\n${Password}\n\"|passwd ${User}"
+}
+
+
+
+installAUR(){
+  echo -e "\e[32mInstalling AUR Packages ! \e[0m"
+  ensureSuccess arch-chroot ${MOUNTPOINT} sudo -u ${User} yay_install
+  for PACKAGE in ${AUR[@]};do 
+    ensureSuccess arch-chroot ${MOUNTPOINT} sudo -u ${User} yay -S ${PACKAGE} --noconfirm
+  done
+  #ensureSuccess arch-chroot ${MOUNTPOINT} yay -S ${AUR[*]} --noconfirm
+
 }
 
 runPostInstall(){
   arch-chroot ${MOUNTPOINT} sudo -u ${User} post_install_script
+
+  echo "%wheel ALL=(ALL:ALL) ALL" > ${MOUNTPOINT}/etc/sudoers.d/wheel
 }
 
 
-# preInstall installAll copyOverlay setLocales setKernelModules setHostName setGrub setServices setUser runPostInstall
+##### WARNING ####
+# commands sequence is Critical please dont change the arrangment of which first and which secound
+# 1-preInstall 2-installAll 3-copyOverlay 4-setLocales 5-setKernelModules 6-setHostName 7-setGrub 8-setServices 9-setUser 10-installAUR 11-runPostInstall
 
 preInstall
 installAll
@@ -511,4 +550,5 @@ setHostName
 setGrub
 setServices
 setUser
+installAUR
 runPostInstall
