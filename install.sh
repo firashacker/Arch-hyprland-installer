@@ -79,6 +79,7 @@ fi
 
 if [ -z "${Password}" ];then
   echo -e "\e[31mErr:please specify User Password \"\-P password \"\e[0m "
+  exit -1
 fi
 
 
