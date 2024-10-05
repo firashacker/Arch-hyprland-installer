@@ -361,17 +361,16 @@ docker-desktop
 #############
 
 FONTS=(
-ttf-iosevka-nerd 
+noto-fonts 
+noto-fonts-emoji 
+terminus-font 
 ttf-jetbrains-mono 
 ttf-jetbrains-mono-nerd 
-ttf-cascadia-mono-nerd 
-noto-fonts 
-terminus-font 
-noto-fonts-emoji 
-noto-fonts-cjk 
 ttf-nerd-fonts-symbols 
 ttf-nerd-fonts-symbols-common 
 ttf-nerd-fonts-symbols-mono 
+#ttf-iosevka-nerd 
+#ttf-cascadia-mono-nerd 
 )
 
 
@@ -524,11 +523,14 @@ setUser(){
 installAUR(){
   echo -e "\e[32mInstalling AUR Packages ! \e[0m"
   ensureSuccess arch-chroot ${MOUNTPOINT} sudo -u ${User} yay_install
-  for PACKAGE in ${AUR[@]};do 
-    ensureSuccess arch-chroot ${MOUNTPOINT} sudo -u ${User} yay -S ${PACKAGE} --noconfirm
-  done
+  arch-chroot ${MOUNTPOINT} sudo -u ${User} yay -S ${AUR[*]} --noconfirm
+  if $(checkErr);then
+    for PACKAGE in ${AUR[@]};do 
+      arch-chroot ${MOUNTPOINT} sudo -u ${User} yay -S ${PACKAGE} --noconfirm
+      if $(checkErr);then echo -e "\e[31mErr: Package ${PACKAGE} Couldnt be installed ! \e[0m"
+    done
+  fi
   #ensureSuccess arch-chroot ${MOUNTPOINT} yay -S ${AUR[*]} --noconfirm
-
 }
 
 runPostInstall(){

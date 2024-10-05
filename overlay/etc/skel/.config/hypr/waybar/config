@@ -307,13 +307,13 @@
     "mpd": {
         "interval": 2,
         "unknown-tag": "N/A",
- //     "format": "Arch | 祥 {elapsedTime:%M:%S}",
-        "format": " {artist} - {title} <span color=\"#A3BE8C\">󰎈</span> | <span color=\"#BF616A\" font=\"14\">祥</span> {elapsedTime:%M:%S}",
+ //     "format": " Arch | 󰔛 {elapsedTime:%M:%S}",
+        "format": " {artist} - {title} <span color=\"#A3BE8C\">󰎈</span> | <span color=\"#BF616A\" font=\"14\">󰔛 </span> {elapsedTime:%M:%S}",
         "format-disconnected": "Disconnected",
-        "format-paused": "{artist} - {title} <span color=\"#A3BE8C\">󰎈</span>",
- //     "format-paused": "Arch",
-        "format-stopped": "Stopped <span color=\"#BF616A\">󰎈</span>",
-        "tooltip-format": "MPD (connected)",
+        "format-paused": " {artist} - {title} <span color=\"#A3BE8C\">󰎈</span>",
+ //     "format-paused": " Arch",
+        "format-stopped": " Stopped <span color=\"#BF616A\">󰎈</span>",
+        "tooltip-format": " MPD (connected)",
         "tooltip-format-disconnected": "MPD (disconnected)",
     // Commands to execute on events
         "on-click": "mpc toggle",
@@ -322,7 +322,7 @@
         "smooth-scrolling-threshold": 1,
     },
     "mpd#2": {
-        "format": "玲",
+        "format": "󰒮",
         "format-disconnected": "",
         "format-paused": "",
         "format-stopped": "",
@@ -331,19 +331,19 @@
     },
     "mpd#3": {
         "interval": 1,
-        "format": "<span font=\"12\">{stateIcon}</span>",
-        "format-disconnected": "",
+        "format": "<span font=\"14\">{stateIcon}</span>",
+        "format-disconnected": "󰙦",
         "format-paused": "{stateIcon}",
-        "format-stopped": "",
+        "format-stopped": "󰙦",
         "state-icons": {
-            "paused": "<span color=\"#BF616A\"> </span>",
-            "playing": "<span color=\"#A3BE8C\"></span>"
+            "paused": "<span  color=\"#BF616A\">󰐍</span>",
+            "playing": "<span color=\"#A3BE8C\">󰏦</span>"
         },
     // Commands to execute on events
         "on-click": "mpc toggle",
     },
     "mpd#4": {
-        "format": "怜",
+        "format": "󰒭",
         "format-disconnected": "",
         "format-paused": "",
         "format-stopped": "",
@@ -373,14 +373,14 @@
     "bluetooth": {
     //"controller": "controller1",
     //"format-device-preference": "",
-    "format": " {status}",
-    "format-on": "<span color=\"#81A1C1\"></span> {status}",
-    "format-off": "<span color=\"#BF616A\"></span> {status}",
+    "format": "󰂯 {status}",
+    "format-on": "<span color=\"#81A1C1\">󰂯</span> {status}",
+    "format-off": "<span color=\"#BF616A\">󰂲</span> {status}",
     //"format-on": "<span color=\"#81A1C1\"></span>",
     //"format-off": "<span color=\"#BF616A\"></span>",
-    "format-disabled": " {status}",
-    "format-connected": "<span font=\"15\" color=\"#A3BE8C\"></span> {device_alias}",
-    "format-connected-battery": "<span font=\"15\" color=\"#A3BE8C\"></span> {device_alias}, {device_battery_percentage}%",
+    "format-disabled": "󰂲 {status}",
+    "format-connected": "<span  color=\"#A3BE8C\">󰂱</span> {device_alias}",
+    "format-connected-battery": "<span color=\"#A3BE8C\">󰂱</span> {device_alias}, <span color=\"#A3BE8C\">󰥉 </span>{device_battery_percentage}%",
     "tooltip": true,
     "tooltip-format": "{controller_alias}\t{controller_address}",
     "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
@@ -392,9 +392,9 @@
     
     "clock#2": {
     "interval": 1,
-    //"format": "<span font='16' color=\"#BF616A\"></span> {:%I:%M %p}", // AM PM format
-    "format": "<span font='12' color=\"#BF616A\"></span> {:%H:%M:%S}",
-    "format-alt": "<span font='12' color=\"#BF616A\"></span> {:%H:%M   %Y, %d %B, %A}",
+    //"format": "<span font='16' color=\"#BF616A\">󰥔</span> {:%I:%M %p}", // AM PM format
+    "format": "<span font='12' color=\"#BF616A\">󰥔</span> {:%H:%M:%S}",
+    "format-alt": "<span font='12' color=\"#BF616A\">󰥔</span> {:%H:%M   %Y, %d %B, %A}",
     "tooltip-format": "<tt><small>{calendar}</small></tt>",
     "calendar": {
       "mode"          : "year",
@@ -551,12 +551,12 @@
     "format-wifi": "<span color=\"#81A1C1\">{icon}</span>",
 //    "format-ethernet": "󰌘",
 //    "format-disconnected": "󰌙",
-    "format-ethernet": "<span color=\"#81A1C1\">歷</span> {ipaddr}",
+    "format-ethernet": "<span color=\"#81A1C1\">󰈀 </span> {ipaddr}",
     "format-disconnected": "<span color=\"#BF616A\">⚠</span> Disconnected !", 
-    "tooltip-format": "歷 {ipaddr}  {bandwidthUpBytes}  {bandwidthDownBytes}",
+    "tooltip-format": "󰈀 {ipaddr}  {bandwidthUpBytes}  {bandwidthDownBytes}",
     "format-linked": "󰈁 {ifname} (No IP)",
     "tooltip-format-wifi": "󰤨 {essid} {icon} {signalStrength}%",
-    "tooltip-format-ethernet": "歷 {ifname}",
+    "tooltip-format-ethernet": "󰈀 {ifname}",
     "tooltip-format-disconnected": "⚠ Disconnected",
     "max-length": 50,
     "format-icons": ["󰤯","󰤟","󰤢","󰤥","󰤨"]
@@ -620,9 +620,9 @@
         //"format-source": "{volume}% ",
         //"format-source-muted": "",
         "format-icons": {
-            "headphone": "",
-            "hands-free": "וֹ",
-            "headset": "",
+            "headphone": "󰋋",
+            //"hands-free": "וֹ",
+            "headset": "󰋎",
             "phone": "",
             "portable": "",
             "car": "",

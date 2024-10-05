@@ -37,8 +37,9 @@ ALTWHITE = #ECEFF4
 */
 
 * {
-  font-family: "JetBrainsMono Nerd Font";
+  font-family: "Symbols Nerd Font", "JetBrainsMono Nerd Font";
   font-size: 1.1rem;
+  font-weight: 600;
   transition: none;
   box-shadow: none;
 }

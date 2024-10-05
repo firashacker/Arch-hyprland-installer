@@ -1,0 +1,1 @@
+sudo find /var/lib/pacman/local/ -type f -name desc -exec sed -i '/^%INSTALLED_DB%$/,+2d' {} \;
