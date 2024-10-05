@@ -527,7 +527,10 @@ installAUR(){
   if $(checkErr);then
     for PACKAGE in ${AUR[@]};do 
       arch-chroot ${MOUNTPOINT} sudo -u ${User} yay -S ${PACKAGE} --noconfirm
-      if $(checkErr);then echo -e "\e[31mErr: Package ${PACKAGE} Couldnt be installed ! \e[0m"
+      if $(checkErr);then
+        echo -e "\e[31mErr: Package ${PACKAGE} Couldnt be installed ! \e[0m"
+        sleep 3
+      fi
     done
   fi
   #ensureSuccess arch-chroot ${MOUNTPOINT} yay -S ${AUR[*]} --noconfirm
