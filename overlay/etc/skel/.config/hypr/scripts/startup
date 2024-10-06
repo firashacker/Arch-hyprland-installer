@@ -62,8 +62,6 @@ nm-applet --indicator &
 #hyprland portal
 ~/.config/hypr/scripts/portal &
 
-#mpd notification daemon
-~/.config/hypr/scripts/mpdtrack &
 
 #start kdeconnect daemon
 #/usr/lib/kdeconnectd &
