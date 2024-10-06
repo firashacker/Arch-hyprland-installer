@@ -14,7 +14,9 @@ prompt () {
 
 ######
 ######
-
+prompt sshd;if [[ $status == true ]] ;then
+sudo systemctl enable sshd
+fi
 
 prompt TMUX;if [[ $status == true ]] ;then
 sudo pacman -S tmux --noconfirm
