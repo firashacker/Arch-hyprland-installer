@@ -67,8 +67,8 @@ prompt chaotic-aur;if [[ $status == true ]] ;then
 
 	sudo pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com
 	sudo pacman-key --lsign-key 3056513887B78AEB
-	sudo pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst'
-	sudo pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
+	sudo pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' --noconfirm
+	sudo pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --noconfirm
 	echo -e "[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist"|sudo tee -a /etc/pacman.conf
 
 
@@ -107,8 +107,8 @@ prompt Clean-Cache;if [[ $status == true ]] ;then
 	rm -rf ~/.cache/*
 
 	echo "clean pacman cache"
-  sudo pacman -Runs $(pacman -Qtqd)
-	sudo pacman -Sc
+  sudo pacman -Runs $(pacman -Qtqd) --noconfirm
+	sudo pacman -Sc --noconfirm
 	sudo rm -r /var/cache/pacman/pkg/*
 
 fi
