@@ -223,7 +223,7 @@ swaync
 
 #### apps and other menues launcher ####
 rofi-wayland 
-
+rofimoji
 #### desktop portal important for video capture and so ####
 xdg-desktop-portal-gtk 
 xdg-desktop-portal-hyprland 

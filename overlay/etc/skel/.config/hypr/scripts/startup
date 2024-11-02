@@ -84,6 +84,4 @@ wl-paste --watch cliphist store &
 dex -a -s ~/.config/autostart/ &
 
 # Mount my smb share 
-#SMBUser=""
-#SMBPassword=""
-#bash -c 'sleep 5 && echo -e "${USER}\n\n${PASSWORD}"|gio mount smb://192.168.88.200/rpi4' &
+bash -c 'sleep 5 && echo -e "firas\n\nfinororas"|gio mount smb://192.168.88.200/rpi4' &

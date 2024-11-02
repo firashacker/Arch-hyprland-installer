@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+
+## Copyright (C) 2020-2024 Aditya Shakya <adi1090x@gmail.com>
+##
+## Autostart Programs
+
+# Kill already running process
+_ps=(waybar swaync)
+for _prs in "${_ps[@]}"; do
+	if [[ `pidof ${_prs}` ]]; then
+		killall -9 ${_prs}
+	fi
+done
+
+# Polkit agent
+if [[ ! `pidof xfce-polkit` ]]; then
+	/usr/lib/xfce-polkit/xfce-polkit &
+fi
+
+# Set wallpaper
+#~/.config/hypr/scripts/wallpaper &
+
+#waypaper --restore &
+
+#video wallpaper
+WALPID="$HOME/.config/hypr/.cache/mpvwall"
+if [[ -f $WALPID ]];then
+	~/.config/hypr/scripts/videowallpaper > $WALPID &
+else
+	if [[ -f "$(which waypaper)" ]];then
+		waypaper --restore &
+	else
+		hyprpaper
+	fi
+fi
+
+
+#vnc remote desktop
+#~/.config/hypr/scripts/vnc &
+
+
+
+# Apply themes
+~/.config/hypr/scripts/gtkthemes &
+
+
+#start hypridle
+hypridle &
+
+# Lauch notification daemon (mako)
+#~/.config/hypr/scripts/notifications &
+if [[ ! `pidof swaync` ]]; then
+	swaync &
+fi
+
+# Lauch statusbar (waybar)
+~/.config/hypr/scripts/statusbar &
+
+# Start network manager applet
+nm-applet --indicator &
+
+#hyprland portal
+~/.config/hypr/scripts/portal &
+
+
+#start kdeconnect daemon
+#/usr/lib/kdeconnectd &
+# Start mpd
+exec mpd -v &
+
+
+# start openrazer daemon
+openrazer-daemon &
+
+
+#start mpd trackchange notifier daemon
+killall -q mpdtrack
+bash -c "sleep 5;$HOME/.config/hypr/scripts/mpdtrack " &
+
+#start clipmanager listiner
+wl-paste --watch cliphist store &
+
+# autostart apps
+dex -a -s ~/.config/autostart/ &
+
+# Mount my smb share 
+bash -c 'sleep 5 && echo -e "firas\n\nfinororas"|gio mount smb://192.168.88.200/rpi4' &
