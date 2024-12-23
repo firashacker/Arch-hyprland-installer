@@ -270,7 +270,7 @@ else
     alias l='ls -F'
     alias l.='ls -d'
 fi
-alias xampp='/opt/lampp/xampp'
+alias xampp='sudo /opt/lampp/xampp'
 alias vim='nvim'
 alias nano='nano -T 4'
 alias venv='python3 -m venv'
