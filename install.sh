@@ -300,8 +300,8 @@ atril
 corectrl 
 
 #### distrobox ####
-distrobox 
-podman 
+##distrobox 
+##podman 
 
 #### webbrowser ####
 firefox 
@@ -333,7 +333,7 @@ openrazer-daemon
 openrazer-driver-dkms 
 
 #### audio mixer ####
-easyeffects 
+##easyeffects 
 
 #### neovim ####
 neovim 
@@ -349,9 +349,9 @@ zed
 #ollama 
 node 
 npm 
-docker 
-docker-compose 
-docker-desktop 
+#docker 
+#docker-compose 
+#docker-desktop 
 )
 
 
@@ -379,7 +379,7 @@ obs-vkcapture-git
 libopenrazer 
 mpvpaper 
 polychromatic 
-rtl8812au-aircrack-ng-dkms-git 
+#rtl8812au-aircrack-ng-dkms-git 
 upd72020x-fw 
 wd719x-firmware 
 opencl-amd 
@@ -395,6 +395,7 @@ obs-vaapi
 preInstall(){
   hwclock --systohc
   timedatectl set-ntp yes
+  sudo pacman -Sy archlinux-keyring
   #sudo reflector --latest 20 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
   sleep 2
 }
