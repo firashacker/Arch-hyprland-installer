@@ -276,9 +276,16 @@ playerctl
 waybar 
 
 #### image viewer ####
+imv
+#gwenview
 #swappy 
 #viewnior 
-nsxiv
+#nsxiv
+
+
+#### status bar applet for network manager ####
+network-manager-applet 
+
 
 #### bluetooth control panel ####
 blueberry 
@@ -318,9 +325,6 @@ gparted
 
 #### KDE connect ####
 #kdeconnect 
-
-#### status bar applet for network manager ####
-network-manager-applet 
 
 #### timeshift ####
 timeshift
