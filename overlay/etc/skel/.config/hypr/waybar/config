@@ -47,7 +47,7 @@
     //"custom/launcher",
     "hyprland/workspaces#roman",
     "idle_inhibitor",
-    //"custom/winvm",
+    "custom/winvm",
     "custom/separator#2" ,
     "hyprland/window",
     "custom/separator#3",

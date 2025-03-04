@@ -60,7 +60,7 @@ fi
 nm-applet --indicator &
 
 #hyprland portal
-~/.config/hypr/scripts/portal &
+#~/.config/hypr/scripts/portal &
 
 
 #start kdeconnect daemon

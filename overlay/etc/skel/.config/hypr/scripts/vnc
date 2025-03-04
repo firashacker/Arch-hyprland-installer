@@ -1,4 +1,5 @@
 #!/bin/bash
+env WAYLAND_DISPLAY=wayland-1 
 if [[ ! -e $(which wayvnc) ]];then
 	notify-send -t 2000 "Please install and Configure [wayvnc]"
 fi
