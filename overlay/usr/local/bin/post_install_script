@@ -101,6 +101,18 @@ prompt Enable-VNC-RemoteDesktop;if [[ $status == true ]] ;then
 	sudo pacman -S wayvnc --noconfirm
 fi
 
+
+prompt NO_Password_Mount_Disk;if [[ $status == true ]] ;then
+sudo mkdir -p /etc/polkit-1/rules.d/
+echo 'polkit.addRule(function(action, subject) {
+    if ((action.id == "org.freedesktop.udisks2.filesystem-mount-system" ||
+         action.id == "org.freedesktop.udisks2.filesystem-mount") &&
+        subject.isInGroup("wheel")) {
+        return polkit.Result.YES;
+    }
+});' | sudo tee /etc/polkit-1/rules.d/10-udisks2.rules
+fi
+
 prompt Clean-Cache;if [[ $status == true ]] ;then
 
 	echo "cleaning cache folder"
