@@ -87,4 +87,4 @@ dex -a -s ~/.config/autostart/ &
 bash -c 'sleep 5 && echo -e "firas\n\n'Password'"|gio mount smb://192.168.88.200/rpi4' &
 
 # Mount HDD Drive
-udisksctl mount -b /dev/disk/by-label/HDD
+udisksctl mount  -t ntfs -b /dev/disk/by-label/HDD
