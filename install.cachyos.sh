@@ -438,7 +438,7 @@ ensureSuccess(){
 
 installLinux(){
   echo -e "\e[32mInstalling Linux Base ! ... \e[0m"
-  ensureSuccess pacstrap -K ${MOUNTPOINT} base linux linux-headers linux-firmware grub efibootmgr
+  ensureSuccess pacstrap -K ${MOUNTPOINT} base linux-cachyos linux-cachyos-headers linux-firmware mkinitcpio grub efibootmgr
   genfstab -U ${MOUNTPOINT} > ${MOUNTPOINT}/etc/fstab
   rm -r ${MOUNTPOINT}/etc/localtime
   ensureSuccess ln -sf /usr/share/zoneinfo/${TIMEZONE} ${MOUNTPOINT}/etc/localtime
@@ -489,7 +489,7 @@ setKernelModules(){
   Modules=(amdgpu radeon)
   sed -i "s/MODULES=()/MODULES=(${Modules})/g" /mnt/etc/mkinitcpio.conf
   sed -i "s/ udev/ udev plymouth/g" /mnt/etc/mkinitcpio.conf
-  sed -i "s/plymouth plymouth/plymouth/g" /mnt/etc/mkinitcpio.conf  
+  sed -i "s/plymouth plymouth/plymouth/g" /mnt/etc/mkinitcpio.conf 
 }
 
 setHostName(){
