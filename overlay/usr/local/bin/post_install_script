@@ -102,6 +102,9 @@ prompt Enable-VNC-RemoteDesktop;if [[ $status == true ]] ;then
 fi
 
 
+
+
+
 prompt NO_Password_Mount_Disk;if [[ $status == true ]] ;then
 sudo mkdir -p /etc/polkit-1/rules.d/
 echo 'polkit.addRule(function(action, subject) {
@@ -112,6 +115,25 @@ echo 'polkit.addRule(function(action, subject) {
     }
 });' | sudo tee /etc/polkit-1/rules.d/10-udisks2.rules
 fi
+
+prompt Samba_Share;if [[ $status == true ]] ;then
+	mkdir -p ~/Share
+	sudo pacman -S samba
+	echo "
+[Share]
+    comment = Shared Folder
+    path = /home/${USER}/Share
+    browsable = yes
+    writable = yes
+    guest ok = no
+    valid users = ${USER}
+    create mask = 0660
+    directory mask = 0770
+    "|sudo tee /etc/samba/smb.conf
+	sudo smbpasswd -a $USER
+	sudo systemctl start smb
+fi
+
 
 prompt Clean-Cache;if [[ $status == true ]] ;then
 
