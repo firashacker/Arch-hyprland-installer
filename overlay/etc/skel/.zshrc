@@ -330,12 +330,12 @@ declare -i cols=$(tput cols)
 #alias mpc='mpc --host=/tmp/mpd.socket'
 
 
-if [ -f "$(which neofetch)" ];then
+if [ -f "$(which fastfetch)" ];then
 	if (( $cols>40 ));then
 		#if [ -f /usr/bin/lolcat ];then
-		#	neofetch|lolcat
+		#	fastfetch|lolcat
 		#else
-			neofetch
+			fastfetch
 		#fi
 	fi
 fi

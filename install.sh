@@ -141,7 +141,7 @@ nano
 nano-syntax-highlighting 
 netctl 
 networkmanager 
-neofetch 
+fastfetch 
 ntfs-3g 
 nvme-cli 
 openssh 
