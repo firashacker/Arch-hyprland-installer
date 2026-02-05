@@ -47,11 +47,10 @@ if [ -z "${User}" ] || [ -z "${HostName}" ] || [ -z "${Password}" ]; then
   getHelp
 fi
 
-source  ./packages/base.sh
-source  ./packages/dm.sh
-source  ./packages/hypr.sh
-source ./packages/apps.sh
-source ./packages/aur.sh
+source  ./pkgs/dm.sh
+source  ./pkgs/hypr.sh
+source ./pkgs/apps.sh
+source ./pkgs/aur.sh
 
 preInstall(){
   echo -e "\e[32mPre-install syncing... \e[0m"
