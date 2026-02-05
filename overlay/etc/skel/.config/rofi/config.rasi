@@ -182,4 +182,5 @@ configuration {
 	me-select-entry: "";
 	me-accept-entry: "MousePrimary";
 	me-accept-custom: "Control+MouseDPrimary";
+  kb-cancel: "MousePrimary,Escape";
 }

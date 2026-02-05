@@ -1,2 +1,0 @@
-#!/bin/env bash
-kitty --class kitty-float -c ~/.config/hypr/nord-kitty.conf

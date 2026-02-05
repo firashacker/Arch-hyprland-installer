@@ -1,2 +1,0 @@
-#!/bin/env bash
-kitty -c ~/.config/hypr/nord-kitty.conf
