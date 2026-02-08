@@ -21,7 +21,8 @@ fi
 
 getHelp(){
   echo "#########################################################"
-  echo "### Welcome to ArchLinux Hyprland Installation Script ###"
+  echo 
+  "### Welcome to ArchLinux Hyprland Installation Script ###"
   echo "#########################################################"
   echo -e "\e[33mYour Disk must Be Preformated and mounted like so\e[0m"
   echo -e "\e[31mRoot partition mounted to ${MOUNTPOINT}\e[0m"
@@ -47,6 +48,7 @@ if [ -z "${User}" ] || [ -z "${HostName}" ] || [ -z "${Password}" ]; then
   getHelp
 fi
 
+source ./pkgs/base.sh
 source  ./pkgs/dm.sh
 source  ./pkgs/hypr.sh
 source ./pkgs/apps.sh
@@ -77,7 +79,7 @@ ensureSuccess(){
 
 installLinux(){
   echo -e "\e[32mInstalling Linux Base ! ... \e[0m"
-  ensureSuccess pacstrap -K ${MOUNTPOINT} base linux linux-headers linux-firmware grub efibootmgr
+  ensureSuccess pacstrap -K ${MOUNTPOINT} base linux linux-headers linux-firmware grub grub-btrfs efibootmgr
   genfstab -U ${MOUNTPOINT} >> ${MOUNTPOINT}/etc/fstab
   rm -r ${MOUNTPOINT}/etc/localtime
   arch-chroot ${MOUNTPOINT} ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime
@@ -91,7 +93,7 @@ installApps(){
   echo -e "\e[32mInstalling desktop and apps ! ... \e[0m"
   ensureSuccess pacstrap -K ${MOUNTPOINT} ${PACKAGES_BASE[*]} ${DISPLAY_MANAGER[*]} ${HYPR[*]} ${FONTS[*]} ${APPS[*]}
   ensureSuccess arch-chroot ${MOUNTPOINT} pacman-key --init
-  ensureSuccess arch-chroot ${MOUNTPOINT} pacman-key --populate}
+  ensureSuccess arch-chroot ${MOUNTPOINT} pacman-key --populate
 
 }
 
@@ -132,19 +134,30 @@ setGrub(){
 }
 
 setServices(){
-  arch-chroot ${MOUNTPOINT} systemctl enable sddm NetworkManager bluetooth
+  arch-chroot ${MOUNTPOINT} systemctl enable sddm NetworkManager bluetooth grub-btrfsd
 }
+
 
 setUser(){
   echo -e "\e[32mAdding User: ${User} ... \e[0m"
-  arch-chroot ${MOUNTPOINT} useradd -m -G wheel -s /bin/zsh ${User}
-  echo "${User}:${Password}" | arch-chroot ${MOUNTPOINT} chpasswd
+  
+  arch-chroot ${MOUNTPOINT} useradd -m -G wheel -s /bin/zsh ${User} --home /home/${User}
+  #sed -i 's/^#\s*\(%wheel\s\+ALL=(ALL:ALL)\s\+ALL\)/\1/' ${MOUNTPOINT}/etc/sudoers
+  mkdir -p ${MOUNTPOINT}/etc/sudoers.d/
   echo "%wheel ALL=(ALL:ALL) NOPASSWD: ALL" > ${MOUNTPOINT}/etc/sudoers.d/wheel
+
+  echo -e "\e[32mSetting Password for USER:${User} ! \e[0m"
+  #arch-chroot ${MOUNTPOINT} "passwd ${User}"
+  echo "${User}:${Password}" | arch-chroot ${MOUNTPOINT} chpasswd
 }
+
+
+
 
 installAUR(){
   echo -e "\e[32mInstalling AUR Packages ! \e[0m"
   # This assumes yay is installed via localpkgs or overlay
+  arch-chroot ${MOUNTPOINT} sudo -u ${User} yay_install
   for PACKAGE in ${AUR[@]}; do
     arch-chroot ${MOUNTPOINT} sudo -u ${User} yay -S ${PACKAGE} --noconfirm || echo "Failed to install ${PACKAGE}"
   done

@@ -59,7 +59,7 @@ HYPR=(
   pavucontrol                 # PulseAudio volume control (GUI)
   playerctl                   # Media player controller (Play/Pause/Next)
   network-manager-applet      # System tray icon for NetworkManager
-  blueberry                   # Bluetooth configuration tool
+#  blueberry                   # Bluetooth configuration tool
 )
 FONTS=(
   noto-fonts 
