@@ -25,4 +25,6 @@ APPS=(
   
   ### GUI Utilities
   yad                         # Tool to create graphical dialogs from shell scripts
+  ### space management 
+  qdirstat
 )
