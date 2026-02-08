@@ -149,6 +149,8 @@ setUser(){
   echo -e "\e[32mSetting Password for USER:${User} ! \e[0m"
   #arch-chroot ${MOUNTPOINT} "passwd ${User}"
   echo "${User}:${Password}" | arch-chroot ${MOUNTPOINT} chpasswd
+  arch-chroot ${MOUNTPOINT} sudo -u ${User} bash -c "mkdir -p ~/ {Data,Documents,Downloads,Music,Pictures,Projects,Public,Templates,Videos}"
+
 }
 
 
