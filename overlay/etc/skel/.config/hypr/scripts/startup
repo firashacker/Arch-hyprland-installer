@@ -30,6 +30,9 @@ else
 fi
 
 
+
+
+
 #vnc remote desktop
 ~/.config/hypr/scripts/vnc &
 
