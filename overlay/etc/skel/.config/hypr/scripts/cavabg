@@ -1,0 +1,21 @@
+#!/bin/bash
+PIDFILE=/tmp/cavabg.pid
+
+if [ -f "$PIDFILE" ]; then
+    PID=$(cat "$PIDFILE")
+    # التأكد من أن العملية تخص kitty أو cava فعلياً قبل قتلها
+    if ps -p "$PID" > /dev/null; then
+        kill "$PID"
+        rm "$PIDFILE"
+        notify-send -t 1000 "cava bg killed "
+        echo "تم إيقاف النسخة السابقة."
+        exit 0
+    fi
+fi
+
+# تشغيل العملية في الخلفية وحفظ الـ PID الخاص بها
+kitty +kitten panel -o "background_opacity 0" --edge=background cava & 
+
+# حفظ الـ PID الخاص بـ kitty وليس السكربت
+echo $! > "$PIDFILE"
+notify-send -t 1000 "cava bg started" 
