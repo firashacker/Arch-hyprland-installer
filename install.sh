@@ -112,13 +112,20 @@ setLocales(){
 }
 
 setKernelModules(){
-  echo -e "\e[32mAdding kernel modules ! ... \e[0m"
-  # Set AMD modules for Early KMS
-  Modules=(amdgpu radeon)
+
+  echo -e "\e[32mKernel Configuration is now coppied in overlay ! ... \e[0m"
+  arch-chroot ${MOUNTPOINT} mkinitcpio -P
+  return 0
+
+
+  echo -e "\e[32mSetting Up kernel ! ... \e[0m"
+   Set AMD modules for Early KMS
+  Modules=(amdgpu)
   sed -i "s/MODULES=()/MODULES=(${Modules})/" ${MOUNTPOINT}/etc/mkinitcpio.conf
   # Add Plymouth hook
   sed -i "s/ udev/ udev plymouth/g"  ${MOUNTPOINT}/etc/mkinitcpio.conf
   sed -i "s/plymouth plymouth/plymouth/g"  ${MOUNTPOINT}/etc/mkinitcpio.conf
+
   arch-chroot ${MOUNTPOINT} mkinitcpio -P
 }
 
