@@ -74,6 +74,7 @@ PACKAGES_BASE=(
   wget 
   wireplumber 
   wireless_tools 
+  wireless-regdb
   xdg-utils 
   xdg-user-dirs 
   xf86-input-libinput 
