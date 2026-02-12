@@ -4,7 +4,7 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
-export PATH=$PATH:$HOME/.local/bin:$HOME/.local/guest-bin
+export PATH=$PATH:$HOME/.local/bin:$HOME/.local/guest-bin:$HOME/.bun/bin
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -341,3 +341,6 @@ if [ -f "$(which fastfetch)" ];then
 fi
 
 #enable-pip
+
+# bun completions
+[ -s "/home/firas/.bun/_bun" ] && source "/home/firas/.bun/_bun"
