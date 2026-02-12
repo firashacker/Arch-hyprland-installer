@@ -1,0 +1,10 @@
+[Unit]
+Description=Disable USB ACPI wakeup
+After=multi-user.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c "echo XHCI > /proc/acpi/wakeup"
+
+[Install]
+WantedBy=multi-user.target

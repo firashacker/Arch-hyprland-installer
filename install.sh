@@ -141,7 +141,7 @@ setGrub(){
 }
 
 setServices(){
-  arch-chroot ${MOUNTPOINT} systemctl enable sddm NetworkManager bluetooth grub-btrfsd
+  arch-chroot ${MOUNTPOINT} systemctl enable sddm NetworkManager bluetooth grub-btrfsd disable-wakeup
 }
 
 
