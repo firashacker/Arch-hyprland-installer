@@ -14,7 +14,7 @@ if [ -f "$PIDFILE" ]; then
 fi
 
 # تشغيل العملية في الخلفية وحفظ الـ PID الخاص بها
-kitty +kitten panel -o "background_opacity 0" --edge=background pipes.sh & 
+kitty +kitten panel -o "background_opacity 0" --edge=background pipes.sh -t 3 & 
 
 # حفظ الـ PID الخاص بـ kitty وليس السكربت
 echo $! > "$PIDFILE"
