@@ -62,11 +62,15 @@ HYPR=(
 #  blueberry                   # Bluetooth configuration tool
 )
 FONTS=(
-  noto-fonts 
-  noto-fonts-emoji 
-  terminus-font 
-  ttf-jetbrains-mono 
-  ttf-jetbrains-mono-nerd 
+  ttf-iosevka-nerd
+  ttf-iosevkaterm-nerd
+  ttf-bitstream-vera-mono-nerd
+  ttf-ibmplex-mono-nerd
+  ttf-fantasque-nerd
+  ttf-hack-nerd
+  ttf-jetbrains-mono-nerd
+  noto-fonts-emoji
+  noto-fonts
   ttf-nerd-fonts-symbols 
   ttf-nerd-fonts-symbols-common 
   ttf-nerd-fonts-symbols-mono

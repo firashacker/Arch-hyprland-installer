@@ -3,5 +3,6 @@
 /* Text Font */
 
 * {
-    font: "Iosevka Bold 10";
+    font: "JetBrainsMono Bold 10 " ;
 }
+

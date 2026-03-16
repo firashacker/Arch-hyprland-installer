@@ -1,5 +1,7 @@
 #!/bin/bash
 
+if [ $(which yay) ] ;then exit 0;fi
+
 sudo pacman -S --needed base-devel git --noconfirm
 if (( $? != 0 ));then exit 2 ;fi
 cd
@@ -11,5 +13,3 @@ makepkg -si --noconfirm
 if (( $? != 0 ));then exit 2 ;fi
 cd ..
 rm -rf yay
-
-

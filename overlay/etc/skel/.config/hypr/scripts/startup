@@ -15,19 +15,19 @@ done
 # Set wallpaper
 #~/.config/hypr/scripts/wallpaper &
 
-waypaper --restore &
+
 
 #video wallpaper
-WALPID="$HOME/.config/hypr/.cache/mpvwall"
-if [[ -f $WALPID ]];then
-	~/.config/hypr/scripts/videowallpaper > $WALPID &
-else
+#WALPID="$HOME/.config/hypr/.cache/mpvwall"
+#if [[ -f $WALPID ]];then
+#	~/.config/hypr/scripts/videowallpaper > $WALPID &
+#else
 	if [[ -f "$(which waypaper)" ]];then
 		waypaper --restore &
 	else
 		hyprpaper
 	fi
-fi
+#fi
 
 
 
@@ -56,7 +56,7 @@ fi
 
 # Start network manager applet
 nm-applet --indicator &
-
+#blueman-applet
 #hyprland portal
 #~/.config/hypr/scripts/portal &
 
@@ -81,9 +81,9 @@ wl-paste --watch cliphist store &
 # autostart apps
 dex -a -s ~/.config/autostart/ &
 
-~/.config/hypr/scripts/bongocat.sh &
+#~/.config/hypr/scripts/bongocat.sh &
 
-# Mount my smb share 
+# Mount my smb share
 #bash -c 'sleep 5 && echo -e "firas\n\n'Password'"|gio mount smb://192.168.88.200/rpi4' &
 
 # Mount HDD Drive

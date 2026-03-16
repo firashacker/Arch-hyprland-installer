@@ -14,6 +14,30 @@ prompt () {
 
 ######
 ######
+
+yay_install(){
+if [ $(which yay) ] ;then return 0;fi
+
+  sudo pacman -S --needed base-devel git --noconfirm
+  if (( $? != 0 ));then return 2 ;fi
+  cd
+  rm -rf yay
+  git clone https://aur.archlinux.org/yay.git
+  if (( $? != 0 ));then return 2 ;fi
+  cd yay
+  makepkg -si --noconfirm
+  if (( $? != 0 ));then return 2 ;fi
+  cd ..
+  rm -rf yay
+
+}
+
+prompt yay-aur-helper;if [[ $status == true ]];then
+  yay_install
+fi
+
+
+
 prompt sshd;if [[ $status == true ]] ;then
 sudo systemctl enable sshd
 fi
@@ -33,7 +57,7 @@ git clone https://github.com/firashacker/starter.git ~/.config/nvim
 fi
 
 prompt TimeZone;if [[ $status == true ]] ;then
-sudo hwclock --systohc 
+sudo hwclock --systohc
 sudo timedatectl set-ntp yes
 fi
 
@@ -76,7 +100,7 @@ fi
 
 ####
 ####
- 
+
 
 prompt Razer-User;if [[ $status == true ]];then
 	sudo gpasswd -a $USER plugdev
@@ -146,5 +170,3 @@ prompt Clean-Cache;if [[ $status == true ]] ;then
 	sudo rm -r /var/cache/pacman/pkg/*
 
 fi
-
-

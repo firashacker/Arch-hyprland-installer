@@ -52,7 +52,7 @@
     "hyprland/window",
     "custom/separator#3",
     ],
-    
+
   },
 
   "custom/launcher": {
@@ -180,7 +180,7 @@
     "on-scroll-down": "hyprctl dispatch workspace e-1",
     "all-outputs": true,
     "sort-by-number": true,
-    
+
     "format-icons": {
       "1": " ",
       "2": " ",
@@ -195,7 +195,7 @@
       "focused": "",
       "default": "",
     },
-       
+
 },
 
     "hyprland/workspaces#roman": {
@@ -224,7 +224,7 @@
       "8": "VIII",
       "9": "IX",
       "10": "X",
-      
+
     },
 },
 // PACMAN Style
@@ -250,7 +250,7 @@
       "persistent":"󰊠",
     },
 },
-  
+
 "hyprland/workspaces#kanji": {
     "disable-scroll": true,
     "all-outputs": true,
@@ -275,7 +275,7 @@
       "10": "十",
     }
 },
-  
+
 //  NUMBERS and ICONS style
 "hyprland/workspaces#4": {
     "format": "{name}",
@@ -350,9 +350,9 @@
     // Commands to execute on events
         "on-click": "mpc next",
     },
-    
-    
-    
+
+
+
 //    "bluetooth#2": {
 //        //"controller": "controller1",
 //        //"format-device-preference": "",
@@ -369,7 +369,7 @@
 //        "on-click": "~/.config/hypr/scripts/rofi_bluetooth",
 //        "on-click-right": "blueman-manager",
 //    },
-    
+
     "bluetooth": {
     //"controller": "controller1",
     //"format-device-preference": "",
@@ -386,10 +386,10 @@
     "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
     "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
     "on-click": "~/.config/hypr/scripts/rofi_bluetooth",
-    "on-click-right": "blueberry",
+    "on-click-right": "blueman",
     },
-    
-    
+
+
     "clock#2": {
     "interval": 1,
     //"format": "<span font='16' color=\"#BF616A\">󰥔</span> {:%I:%M %p}", // AM PM format
@@ -409,7 +409,7 @@
       "today":      "<span color='#ff6699'><b><u>{}</u></b></span>"
                 }
                 }
-    },              
+    },
     "actions":  {
       "on-click-right": "mode",
       "on-click-forward": "tz_up",
@@ -417,7 +417,7 @@
       "on-scroll-up": "shift_up",
       "on-scroll-down": "shift_down"
 },
-    
+
 //     "hyprland/workspaces": {
 //         "disable-scroll": true,
          "on-click": "activate",
@@ -545,14 +545,14 @@
     "battery#bat2": {
         "bat": "BAT2"
     },
-    
+
     "network": {
     "format": "{ifname}",
     "format-wifi": "<span color=\"#81A1C1\">{icon}</span>",
 //    "format-ethernet": "󰌘",
 //    "format-disconnected": "󰌙",
     "format-ethernet": "<span color=\"#81A1C1\">󰈀 </span> {ipaddr}",
-    "format-disconnected": "<span color=\"#BF616A\">⚠</span> Disconnected !", 
+    "format-disconnected": "<span color=\"#BF616A\">⚠</span> Disconnected !",
     "tooltip-format": "󰈀 {ipaddr}  {bandwidthUpBytes}  {bandwidthDownBytes}",
     "format-linked": "󰈁 {ifname} (No IP)",
     "tooltip-format-wifi": "󰤨 {essid} {icon} {signalStrength}%",
@@ -561,14 +561,14 @@
     "max-length": 50,
     "format-icons": ["󰤯","󰤟","󰤢","󰤥","󰤨"]
 },
-  
+
 	"network#speed": {
     "interval": 1,
     "format": "{ifname}",
     "format-wifi": "{icon}  {bandwidthUpBytes}  {bandwidthDownBytes}",
     "format-ethernet": "󰌘   {bandwidthUpBytes}  {bandwidthDownBytes}",
     //"format-disconnected": "󰌙",
-    "format-disconnected": "⚠ {ifname}", 
+    "format-disconnected": "⚠ {ifname}",
     "tooltip-format": "{ipaddr}",
     "format-linked": "󰈁 {ifname} (No IP)",
     "tooltip-format-wifi": "{essid} {icon} {signalStrength}%",
@@ -577,8 +577,8 @@
     "max-length": 50,
     "format-icons": ["󰤯","󰤟","󰤢","󰤥","󰤨"]
 },
-    
-    
+
+
 //    "network": {
 //        "interface": "wlan0", // (Optional) To force the use of this interface
 //        "format-wifi": "{essid} ",
@@ -662,4 +662,3 @@
         "exec": "waybar-module-pacman-updates --interval-seconds 5 --network-interval-seconds 300"
     }
 }
-
