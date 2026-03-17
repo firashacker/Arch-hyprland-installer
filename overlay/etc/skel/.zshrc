@@ -260,12 +260,12 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 # some more ls aliases
-if [ -f $(which exa) ];then
-    alias ll='exa -l --icons'
-    alias la='exa -a --icons'
-    alias l='exa -F  --icons'
-    alias l.='exa -d .* --icons'
-    alias ls='exa --icons'
+if [ -f '/bin/eza' ];then
+    alias ll='eza -l --icons'
+    alias la='eza -a --icons'
+    alias l='eza -F  --icons'
+    alias l.='eza -d .* --icons'
+    alias ls='eza --icons'
 else
     alias ll='ls -l'
     alias la='ls -a'
@@ -273,7 +273,7 @@ else
     alias l.='ls -d'
 fi
 alias xampp='sudo /opt/lampp/xampp'
-alias vim='nvim'
+#alias vim='nvim'
 alias nano='nano -T 4'
 alias venv='python3 -m venv'
 alias enable-pip='source ~/.local/lib/python3/bin/activate'
@@ -299,7 +299,8 @@ fi
 
 # tmux
 
-if [[ -f "$(which tmux)" ]];then
+
+if [[ -f "/bin/tmux" ]];then
 # open terminal in tmux
   if [ "$TMUX" = "" ]; then tmux; fi
 #quit if tmux exit
@@ -307,7 +308,7 @@ if [[ -f "$(which tmux)" ]];then
       exit
   fi
   kill-tmux-unattached-sessions(){
-    tmux ls 
+    tmux ls
     echo "kill sessions [Y/n]?"
     read Input
     if [ "$Input" != "n" ] && [ "$Input" != "N" ];then
@@ -326,19 +327,9 @@ fi
 if [ -f /etc/zsh_command_not_found ]; then
     . /etc/zsh_command_not_found
 fi
-declare -i cols=$(tput cols)
 #alias mpc='mpc --host=/tmp/mpd.socket'
 
-
-if [ -f "$(which fastfetch)" ];then
-	if (( $cols>40 ));then
-		#if [ -f /usr/bin/lolcat ];then
-		#	fastfetch|lolcat
-		#else
-			fastfetch
-		#fi
-	fi
-fi
+[[ -f "/bin/fastfetch" ]] && fastfetch
 
 #enable-pip
 

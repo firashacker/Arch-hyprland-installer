@@ -21,7 +21,7 @@ fi
 
 getHelp(){
   echo "#########################################################"
-  echo 
+  echo
   "### Welcome to ArchLinux Hyprland Installation Script ###"
   echo "#########################################################"
   echo -e "\e[33mYour Disk must Be Preformated and mounted like so\e[0m"
@@ -147,7 +147,7 @@ setServices(){
 
 setUser(){
   echo -e "\e[32mAdding User: ${User} ... \e[0m"
-  
+
   arch-chroot ${MOUNTPOINT} useradd -m -G wheel -s /bin/zsh ${User} --home /home/${User}
   #sed -i 's/^#\s*\(%wheel\s\+ALL=(ALL:ALL)\s\+ALL\)/\1/' ${MOUNTPOINT}/etc/sudoers
   mkdir -p ${MOUNTPOINT}/etc/sudoers.d/
@@ -166,6 +166,8 @@ setUser(){
 installAUR(){
   echo -e "\e[32mInstalling AUR Packages ! \e[0m"
   # This assumes yay is installed via localpkgs or overlay
+  mkdir -p ${MOUNTPOINT}/etc/sudoers.d/
+  echo "%wheel ALL=(ALL:ALL) NOPASSWD: ALL" > ${MOUNTPOINT}/etc/sudoers.d/wheel
   arch-chroot ${MOUNTPOINT} sudo -u ${User} yay_install
   for PACKAGE in ${AUR[@]}; do
     arch-chroot ${MOUNTPOINT} sudo -u ${User} yay -S ${PACKAGE} --noconfirm || echo "Failed to install ${PACKAGE}"
@@ -177,7 +179,7 @@ runPostInstall(){
   arch-chroot ${MOUNTPOINT} sudo -u ${User} post_install_script
   echo "%wheel ALL=(ALL:ALL) ALL" > ${MOUNTPOINT}/etc/sudoers.d/wheel
   echo -e "\e[32mInstallation Complete. Please unmount and reboot.\e[0m"
-  
+
 }
 
 # --- Execution ---

@@ -492,7 +492,7 @@ select_drivers()
 
 
 	for i in $INSTALL_DRIVERS; do
-	    [[ ${DRIVER_PKGS[*]} != *"$i"* ]] && DRIVER_PKGS+=($i)
+	    #[[ ${DRIVER_PKGS[*]} != *"$i"* ]] && DRIVER_PKGS+=($i)
 		if [[ ${DRIVERS_EXT[$i]} ]]; then
 			for j in ${DRIVERS_EXT[$i]}; do
 				pkgs+=("$j")
@@ -1727,9 +1727,16 @@ copy_overlay(){
     yesno "Copy Overlay" "\nCopy overlay files to root?\n" || copy='no'
 
     if [[ $copy == 'yes' ]];then
-    msg "Copying Overlay Over ! ..." "${MNT}"
+    msg "Copying Overlay Over ! ..."
     cp -r overlay/* ${MNT}/
-    msg "Overlay Copied Successfully " "${MNT}"
+    sudo sed -i "s~#GRUB_THEME~GRUB_THEME~g ; s/GRUB_THEME=.*/GRUB_THEME=\"\\/boot\\/grub\\/themes\\/archcraft\\/theme.txt\"/g" "$MNT/etc/default/grub"
+    sudo mkdir -p ${MNT}/home/${NEWUSER}/{Desktop,Documents,Downloads,Music,Pictures/Screenshots,Public,Templates,Videos}
+    sudo cp -r ${MNT}/etc/skel/.* ${MNT}/home/${NEWUSER}/
+
+    # make sure the new user owns files in their $HOME
+	chrun "chown -Rf $NEWUSER:users /home/$NEWUSER"
+
+    msg "Overlay Copied Successfully ${MNT}"
     else
         msg "Overlay not copied !"
     fi
@@ -1750,10 +1757,17 @@ install_AUR(){
 }
 
 run_post_install(){
-  # Restrict sudo access after Installation
-  msg "Runing Post Install Script"
+  local run='yes'
+
+  yesno "Run Post Install" "\nRun Post Install Script?\n" || run='no'
+  if [[ $run == 'yes' ]];then
+  mkdir -p ${MNT}/etc/sudoers.d/
+  echo "%wheel ALL=(ALL:ALL) NOPASSWD: ALL" > ${MNT}/etc/sudoers.d/wheel
   chrun "sudo -u ${NEWUSER} post_install_script"
+  # Restrict sudo access after Installation
   echo "%wheel ALL=(ALL:ALL) ALL" > ${MNT}/etc/sudoers.d/wheel
+  msg "finished post install !"
+  fi
 
 }
 
@@ -1768,7 +1782,6 @@ install_main()
 	install_packages
 	install_mkinitcpio
 	install_bootldr
-
 	chrun "hwclock --systohc --utc" || chrun "hwclock --systohc --utc --directisa"
 	install_user
 	install_login
@@ -1790,8 +1803,8 @@ install_main()
     copy_overlay
     install_AUR
 
-    # make sure the new user owns files in their $HOME
-	chrun "chown -Rf $NEWUSER:users /home/$NEWUSER"
+
+    run_post_install
 
 	if [[ "$USERCMD" ]]; then
 		chrun "$USERCMD" 2> "$ERR" 2>&1
@@ -2387,7 +2400,8 @@ setup_grub()
 
 prerun_grub()
 {
-    sudo sed -i "s/GRUB_DISTRIBUTOR=.*/GRUB_DISTRIBUTOR=\"${DIST}\"/g; s/GRUB_THEME=.*/GRUB_THEME=\"\\/boot\\/grub\\/themes\\/archcraft\\/theme.txt\"/g ; s/GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX=\"resume=UUID=$(grep swap ${MNT}/etc/fstab | grep "UUID=" | head -n 1 | sed -e 's/[[:space:]].*//' -e 's/UUID=//') rw\"/g ; s/GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT=\"quiet splash loglevel=3 udev.log_level=3 vt.global_cursor_default=0\"/g" "$MNT/etc/default/grub"
+    sudo sed -i "s/GRUB_DISTRIBUTOR=.*/GRUB_DISTRIBUTOR=\"${DIST}\"/g; s/GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT=\"quiet splash loglevel=3 udev.log_level=3 vt.global_cursor_default=0\"/g" "$MNT/etc/default/grub"
+    [[ $SWAP ]] && sudo sed -i "s/GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX=\"resume=UUID=$(grep swap ${MNT}/etc/fstab | grep "UUID=" | head -n 1 | sed -e 's/[[:space:]].*//' -e 's/UUID=//') rw\"/g"
     if [[ $LUKS_DEV ]]; then
 		sed -i "s~#GRUB_ENABLE_CRYPTODISK~GRUB_ENABLE_CRYPTODISK~g; s~GRUB_CMDLINE_LINUX=.*~GRUB_CMDLINE_LINUX=\"${LUKS_DEV}\"~g" "$MNT/etc/default/grub"
 	fi
