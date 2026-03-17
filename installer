@@ -877,7 +877,7 @@ select_sessions()
 
 select_packages()
 {
-    [[ $USER_PKGS ]] || USER_PKGS=( kitty atril firefox steam gamemode mangohud obs-studio gparted timeshift yad qdirstat bluez blueman kvantum thunar xarchiver )
+    [[ $USER_PKGS ]] || USER_PKGS=(eza kitty atril firefox steam gamemode mangohud obs-studio gparted timeshift yad qdirstat bluez blueman kvantum thunar xarchiver )
 	dlg UPKGS check " Packages " "$_packages" \
 		abiword "A Fully-featured word processor" "$(ofn abiword "${USER_PKGS[*]}")" \
 		alacritty "A cross-platform, GPU-accelerated terminal emulator" "$(ofn alacritty "${USER_PKGS[*]}")" \
