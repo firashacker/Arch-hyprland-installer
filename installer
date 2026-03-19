@@ -838,7 +838,7 @@ select_packages()
 
     # If the array is empty AND we haven't set the defaults yet
     if [[ ${#UPKGS[@]} -eq 0 && -z "$USERPKGS_DEFAULTS_SET" ]]; then
-        UPKGS=(eza kitty atril firefox steam gamemode mangohud obs-studio gparted timeshift yad qdirstat bluez blueman kvantum thunar xarchiver )
+        UPKGS=(eza kitty atril firefox steam gamemode mangohud obs-studio gparted timeshift yad qdirstat bluez blueman kvantum thunar xarchiver nvim)
         USERPKGS_DEFAULTS_SET=1
     fi
     local -a CURRENT_SELECTIONS=${UPKGS[@]}
@@ -901,6 +901,7 @@ select_packages()
 		ncmpcpp "A mpd client and almost exact clone of ncmpc with some new features" "$(ofn ncmpcpp "${CURRENT_SELECTIONS[*]}")" \
 		neovim "A fork of Vim aiming to improve user experience, plugins, and GUIs." "$(ofn neovim "${CURRENT_SELECTIONS[*]}")" \
 		nmap "Utility for network discovery and security auditing" "$(ofn nmap "${CURRENT_SELECTIONS[*]}")" \
+		nvim "Vi Improved, a highly configurable, improved version of the vi text editor" "$(ofn nvim "${CURRENT_SELECTIONS[*]}")" \
 		noto-fonts "Google Noto fonts" "$(ofn noto-fonts "${CURRENT_SELECTIONS[*]}")" \
 		noto-fonts-cjk "Google Noto CJK fonts (Chinese, Japanese, Korean)" "$(ofn noto-fonts-cjk "${CURRENT_SELECTIONS[*]}")" \
 		ntfs-3g "NTFS file system driver and utilities" "$(ofn ntfs-3g "${CURRENT_SELECTIONS[*]}")" \
