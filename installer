@@ -40,8 +40,12 @@ export DIALOGOPTS="--cr-wrap"
 # package arrays built later from user selections
 typeset -a DRIVER_PKGS SES_PKGS USER_PKGS AUR_PKGS WM_PKGS
 
-typeset -a DRVPKGS UPKGS AURPKGS WMPKGS
 # }
+
+# default selected lists options
+DRVPKGS=(AMD-CPU INTEL-CPU AMD-GPU NVIDIA-GPU INTEL-GPU)
+
+
 
 # packages installed specific to archlabs, installed when any session is chosen {
 typeset -a BASE_PKGS=(
@@ -420,8 +424,7 @@ select_show()
 select_drivers()
 {
 	typeset -a pkgs
-
-	[[ -z "${DRVPKGS[*]}" ]] &&  DRVPKGS=(AMD-CPU INTEL-CPU AMD-GPU NVIDIA-GPU INTEL-GPU) && DRIVER_PKGS=()
+	DRIVER_PKGS=()
 	dlg DRVPKGS check "Drivers" "\nSelect drivers to install for your hardware.\n" \
 	    AMD-CPU "cpu microcodes for AMD" "$(ofn AMD-CPU "${DRVPKGS[*]}")" \
 		INTEL-CPU "cpu microcodes for INTEL" "$(ofn INTEL-CPU "${DRVPKGS[*]}")" \
