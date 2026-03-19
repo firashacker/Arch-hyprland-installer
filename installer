@@ -78,7 +78,7 @@ typeset -a BASE_PKGS=(
 "libtheora"
 "libvpx"
 "libva-mesa-driver"
-"linux-firmware-qlogi"
+"linux-firmware-qlogic"
 "mesa"
 "mesa-utils"
 "mpd"
@@ -838,7 +838,7 @@ select_packages()
 
     # If the array is empty AND we haven't set the defaults yet
     if [[ ${#UPKGS[@]} -eq 0 && -z "$USERPKGS_DEFAULTS_SET" ]]; then
-        UPKGS=(eza kitty atril firefox steam gamemode mangohud obs-studio gparted timeshift yad qdirstat bluez blueman kvantum thunar xarchiver nvim)
+        UPKGS=(eza kitty atril firefox steam gamemode mangohud obs-studio gparted timeshift yad bluez blueman kvantum thunar xarchiver nvim)
         USERPKGS_DEFAULTS_SET=1
     fi
     local -a CURRENT_SELECTIONS=${UPKGS[@]}
@@ -913,7 +913,6 @@ select_packages()
 		plank "An elegant, simple, and clean dock" "$(ofn plank "${CURRENT_SELECTIONS[*]}")" \
 		playerctl "Media player controller for spotify, vlc, audacious, bmp, xmms2, and others." "$(ofn playerctl "${CURRENT_SELECTIONS[*]}")" \
 		qbittorrent "An advanced bittorrent client" "$(ofn qbittorrent "${CURRENT_SELECTIONS[*]}")" \
-		qdirstat "Qt-based directory statistics: KDirStat without any KDE -- from the author of the original KDirStat" "$(ofn qdirstat "${CURRENT_SELECTIONS[*]}")" \
 		qt5ct "GUI for managing Qt based application themes, icons, and fonts" "$(ofn qt5ct "${CURRENT_SELECTIONS[*]}")" \
 		qutebrowser "A keyboard-focused vim-like web browser based on Python and PyQt5" "$(ofn qutebrowser "${CURRENT_SELECTIONS[*]}")" \
 		ranger "A simple vim-like file manager" "$(ofn ranger "${CURRENT_SELECTIONS[*]}")" \
@@ -973,7 +972,7 @@ select_aur()
     AUR_PKGS=()
     # If the array is empty AND we haven't set the defaults yet
     if [[ ${#AURPKGS[@]} -eq 0 && -z "$AUR_DEFAULTS_SET" ]]; then
-        AURPKGS=(upd72020x-fw wd719x-firmware arc-gtk-theme)
+        AURPKGS=(upd72020x-fw wd719x-firmware qdirstat arc-gtk-theme)
         AUR_DEFAULTS_SET=1
     fi
     local -a CURRENT_SELECTIONS=${AURPKGS[@]}
@@ -981,7 +980,8 @@ select_aur()
 	dlg AURPKGS check "AUR Packages " "$_packages" \
 		upd72020x-fw "Renesas uPD720201 / uPD720202 USB 3.0 chipsets firmware" "$(ofn upd72020x-fw "${CURRENT_SELECTIONS[*]}")" \
 		wd719x-firmware "Firmware for Western Digital WD7193, WD7197, and WD7296 SCSI cards" "$(ofn wd719x-firmware "${CURRENT_SELECTIONS[*]}")" \
-		arc-gtk-theme "A flat theme with transparent elements for GTK 2,3,4 and Gnome-Shell" "$(ofn arc-gtk-theme "${CURRENT_SELECTIONS[*]}")"
+		qdirstat "Qt-based directory statistics: KDirStat without any KDE -- from the author of the original KDirStat" "$(ofn qdirstat "${CURRENT_SELECTIONS[*]}")" \
+    arc-gtk-theme "A flat theme with transparent elements for GTK 2,3,4 and Gnome-Shell" "$(ofn arc-gtk-theme "${CURRENT_SELECTIONS[*]}")"
 
 
 
