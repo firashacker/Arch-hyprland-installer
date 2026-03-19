@@ -421,7 +421,7 @@ select_drivers()
 {
 	typeset -a pkgs
 
-	[[ -z "${DRVPKGS[*]}" ]] && { DRVPKGS=(AMD-CPU INTEL-CPU AMD-GPU NVIDIA-GPU INTEL-GPU) && DRIVER_PKGS=()
+	[[ -z "${DRVPKGS[*]}" ]] &&  DRVPKGS=(AMD-CPU INTEL-CPU AMD-GPU NVIDIA-GPU INTEL-GPU) && DRIVER_PKGS=()
 	dlg DRVPKGS check "Drivers" "\nSelect drivers to install for your hardware.\n" \
 	    AMD-CPU "cpu microcodes for AMD" "$(ofn AMD-CPU "${DRVPKGS[*]}")" \
 		INTEL-CPU "cpu microcodes for INTEL" "$(ofn INTEL-CPU "${DRVPKGS[*]}")" \
