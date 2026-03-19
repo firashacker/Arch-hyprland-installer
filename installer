@@ -40,6 +40,7 @@ export DIALOGOPTS="--cr-wrap"
 # package arrays built later from user selections
 typeset -a DRIVER_PKGS SES_PKGS USER_PKGS AUR_PKGS WM_PKGS
 
+typeset -a DRVPKGS UPKGS AURPKGS WMPKGS
 # }
 
 # packages installed specific to archlabs, installed when any session is chosen {
@@ -359,7 +360,6 @@ main()
 select_show()
 {
 	local pkgs="${USER_PKGS[*]} ${SES_PKGS[*]}" fmtpkgs='' pkg=''
-	[[ $INSTALL_WMS == *dwm* ]] && pkgs="dwm st dmenu $pkgs"
 	pkgs="${pkgs//  / }"
 	pkgs="${pkgs# }"
 
@@ -785,17 +785,17 @@ select_sessions()
 	typeset -a pkgs
 	LOGIN_CHOICES=''
 	WM_PKGS=()
-    [[ $INSTALL_WMS ]] || INSTALL_WMS=(hyprland)
-	dlg INSTALL_WMS check "Sessions" "$_sessions\n" \
-	    hyprland "highly customizable, wayland dynamic tiling window manager and compositor for Linux" "$(ofn hyprland "${INSTALL_WMS[*]}")" \
-		gnome  "GNOME desktop" "$(ofn gnome "${INSTALL_WMS[*]}")" \
-		plasma "kde-plasma desktop" "$(ofn plasma "${INSTALL_WMS[*]}")" || return 1
+    [[ $WMPKGS ]] || WMPKGS=(hyprland)
+	dlg WMPKGS check "Sessions" "$_sessions\n" \
+	    hyprland "highly customizable, wayland dynamic tiling window manager and compositor for Linux" "$(ofn hyprland "${WMPKGS[*]}")" \
+		gnome  "GNOME desktop" "$(ofn gnome "${WMPKGS[*]}")" \
+		plasma "kde-plasma desktop" "$(ofn plasma "${WMPKGS[*]}")" || return 1
 
-	[[ $INSTALL_WMS ]] || return 0
+	[[ $WMPKGS ]] || return 0
 
 
 
-	for i in $INSTALL_WMS; do
+	for i in $WMPKGS; do
 		LOGIN_CHOICES+="$i - "
 		if [[ ${WM_EXT[$i]} ]]; then
 			for j in ${WM_EXT[$i]}; do
@@ -808,7 +808,7 @@ select_sessions()
 
 	for pkg in "${pkgs[@]}"; do [[ ${WM_PKGS[*]} != *"$pkg"* ]] && WM_PKGS+=("$pkg"); done
 
-	{ [[ $INSTALL_WMS ]] && echo "$INSTALL_WMS" > /tmp/wmlist; } || rm -f /tmp/wmlist
+	{ [[ $WMPKGS ]] && echo "$WMPKGS" > /tmp/wmlist; } || rm -f /tmp/wmlist
 
 	return 0
 }
@@ -2069,10 +2069,10 @@ install_packages()
 
 	inpkg=("${SES_PKGS[@]}" "${USER_PKGS[@]}" "${DRIVER_PKGS}" "$NEWSHELL")
 
-	if [[ $INSTALL_WMS ]]; then
+	if [[ $WMPKGS ]]; then
 		inpkg+=("${BASE_PKGS[@]}" "${WM_PKGS[@]}")
 		[[ -d /etc/NetworkManager/system-connections ]] && inpkg+=("network-manager-applet")
-		[[ ${INSTALL_WMS} =~ 'hyprland' ]] && AUR_PKGS+='arc-gtk-theme'
+		[[ ${WMPKGS} =~ 'hyprland' ]] && AUR_PKGS+='arc-gtk-theme'
 	fi
 
 	for i in ${LOGIN_PKGS[$LOGIN_TYPE]}; do
@@ -2306,7 +2306,7 @@ config_console()
 		rm -rf "$AUTOLOGIN_SERV"
 	fi
 
-	if [[ $INSTALL_WMS ]]; then
+	if [[ $WMPKGS ]]; then
 		rm "$MNT/home/$NEWUSER/$LOGINRC"
 		sed -i "/exec/ c exec ${LOGIN_WM}" "$MNT/home/$NEWUSER/.xinitrc"
 
