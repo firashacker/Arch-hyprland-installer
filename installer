@@ -222,7 +222,6 @@ declare -A DRIVERS_EXT=(
 declare -A LOGIN_PKGS=(
 [sddm]='sddm xorg-xwayland xorg-xhost'
 [ly]='ly'
-[lightdm]='lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings accountsservice'
 ) # }
 
 # extras installed for user selected packages {
@@ -1059,7 +1058,7 @@ part_menu()
 		dlg choice menu 'Modify Partitions' "$_part\n\n$(lsblk -no NAME,MODEL,SIZE,FSTYPE,LABEL "$device")" \
 		    'back'   'Return to the device management menu'  \
 			'auto'   'Whole device automatic partitioning' \
-			$([[ "$DISPLAY" ]] && hash cfdisk >/dev/null 2>&1 && printf \
+			 $( hash cfdisk  >/dev/null 2>&1 && printf \
 			'cfdisk -') \
 			$([[ "$DISPLAY" ]] && hash gparted >/dev/null 2>&1 && printf \
 			'gparted -') || return 0
