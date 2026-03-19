@@ -1,15 +1,37 @@
 #!/bin/bash
+set -euo pipefail
 
-if [ $(which yay) ] ;then exit 0;fi
+# Exit if yay is already installed
+if command -v yay &>/dev/null; then
+  echo "yay is already installed."
+  exit 0
+fi
 
-sudo pacman -S --needed base-devel git --noconfirm
-if (( $? != 0 ));then exit 2 ;fi
-cd
+echo "Installing yay..."
+
+# Install prerequisites
+if ! sudo pacman -S --needed base-devel git --noconfirm; then
+  echo "Failed to install base-devel and git."
+  exit 2
+fi
+
+# Clone yay from AUR
+cd || exit 2
 rm -rf yay
-git clone https://aur.archlinux.org/yay.git
-if (( $? != 0 ));then exit 2 ;fi
-cd yay
-makepkg -si --noconfirm
-if (( $? != 0 ));then exit 2 ;fi
+if ! git clone https://aur.archlinux.org/yay.git; then
+  echo "Failed to clone yay repository."
+  exit 2
+fi
+
+# Build and install yay
+cd yay || exit 2
+if ! makepkg -si --noconfirm; then
+  echo "Failed to build and install yay."
+  exit 2
+fi
+
+# Cleanup
 cd ..
 rm -rf yay
+
+echo "yay installation complete."

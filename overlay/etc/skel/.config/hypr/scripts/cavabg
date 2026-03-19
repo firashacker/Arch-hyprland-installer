@@ -1,21 +1,29 @@
 #!/bin/bash
+set -euo pipefail
+
 PIDFILE=/tmp/cavabg.pid
 
-if [ -f "$PIDFILE" ]; then
+# Stop existing process if PID file exists
+if [[ -f "$PIDFILE" ]]; then
     PID=$(cat "$PIDFILE")
-    # التأكد من أن العملية تخص kitty أو cava فعلياً قبل قتلها
-    if ps -p "$PID" > /dev/null; then
+    if ps -p "$PID" -o comm= | grep -Eq 'kitty|cava'; then
         kill "$PID"
-        rm "$PIDFILE"
-        notify-send -t 1000 "cava bg killed "
-        echo "تم إيقاف النسخة السابقة."
+        rm -f "$PIDFILE"
+        notify-send -t 1000 "cava bg killed (PID $PID)"
+        echo "تم إيقاف النسخة السابقة (PID $PID)."
         exit 0
+    else
+        echo "PID $PID is not kitty/cava, ignoring."
+        rm -f "$PIDFILE"
     fi
 fi
 
-# تشغيل العملية في الخلفية وحفظ الـ PID الخاص بها
-kitty +kitten panel -o "background_opacity 0" --edge=background cava & 
+# Start new process in background
+kitty +kitten panel -o "background_opacity 0" --edge=background cava &
 
-# حفظ الـ PID الخاص بـ kitty وليس السكربت
-echo $! > "$PIDFILE"
-notify-send -t 1000 "cava bg started" 
+# Save PID of kitty
+PID=$!
+echo "$PID" > "$PIDFILE"
+
+notify-send -t 1000 "cava bg started (PID $PID)"
+echo "تم تشغيل cava في الخلفية (PID $PID)."

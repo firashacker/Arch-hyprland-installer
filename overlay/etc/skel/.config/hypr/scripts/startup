@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 ## Copyright (C) 2020-2024 Aditya Shakya <adi1090x@gmail.com>
 ##
@@ -22,11 +23,11 @@ done
 #if [[ -f $WALPID ]];then
 #	~/.config/hypr/scripts/videowallpaper > $WALPID &
 #else
-	if [[ -f "$(which waypaper)" ]];then
-		waypaper --restore &
-	else
-		hyprpaper &
-	fi
+if command -v waypaper &>/dev/null; then
+    waypaper --restore &
+else
+    hyprpaper &
+fi
 #fi
 
 

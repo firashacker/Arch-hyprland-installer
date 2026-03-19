@@ -1,149 +1,67 @@
 #!/bin/bash
-declare status=false
-declare cpiochange=flase
+set -euo pipefail
+
+status=0
 
 prompt () {
-	status=flase
-	echo -e "whould you like to (un/install/update/configure) \e[32m [ $1 ] \e[0m on this device ?[N/y]"
-	read answer
-	if [[ "$answer" == "y" || "$answer" == "Y" ]];then
-		status=true
-	fi
+    status=0
+    echo -e "Would you like to (un/install/update/configure) \e[32m[ $1 ]\e[0m on this device? [N/y]"
+    read -r answer
+    if [[ "$answer" =~ ^[Yy]$ ]]; then
+        status=1
+    fi
 }
 
+yay_install() {
+    if command -v yay &>/dev/null; then return 0; fi
 
-######
-######
-
-yay_install(){
-if [ $(which yay) ] ;then return 0;fi
-
-  sudo pacman -S --needed base-devel git --noconfirm
-  if (( $? != 0 ));then return 2 ;fi
-  cd
-  rm -rf yay
-  git clone https://aur.archlinux.org/yay.git
-  if (( $? != 0 ));then return 2 ;fi
-  cd yay
-  makepkg -si --noconfirm
-  if (( $? != 0 ));then return 2 ;fi
-  cd ..
-  rm -rf yay
-
+    echo "Installing yay..."
+    sudo pacman -S --needed base-devel git --noconfirm || return 2
+    cd || return 2
+    rm -rf yay
+    git clone https://aur.archlinux.org/yay.git || return 2
+    cd yay
+    makepkg -si --noconfirm || return 2
+    cd ..
+    rm -rf yay
 }
 
-prompt yay-aur-helper;if [[ $status == true ]];then
-  yay_install
-fi
+install_tmux() {
+    sudo pacman -S tmux --noconfirm
+    rm -rf ~/.config/tmux
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+    git clone https://github.com/firashacker/tmux-config.git ~/.config/tmux
+}
 
+install_nvim() {
+    sudo pacman -S nvim --noconfirm
+    rm -rf ~/.config/nvim
+    git clone https://github.com/firashacker/starter.git ~/.config/nvim
+}
 
+install_wine() {
+    sudo pacman -S --needed wine-staging giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls \
+    mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error \
+    lib32-libgpg-error alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib libjpeg-turbo lib32-libjpeg-turbo \
+    sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama \
+    ncurses lib32-ncurses ocl-icd lib32-ocl-icd libxslt lib32-libxslt libva lib32-libva gtk3 \
+    lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader --noconfirm
 
-prompt sshd;if [[ $status == true ]] ;then
-sudo systemctl enable sshd
-fi
+    echo net.ipv4.tcp_mtu_probing=1 | sudo tee /etc/sysctl.d/custom-mtu-probing.conf
+}
 
-prompt TMUX;if [[ $status == true ]] ;then
-sudo pacman -S tmux --noconfirm
-rm -rf ~/.config/tmux
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-git clone https://github.com/firashacker/tmux-config.git ~/.config/tmux
-fi
+enable_chaotic_aur() {
+    sudo pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com
+    sudo pacman-key --lsign-key 3056513887B78AEB
+    sudo pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' --noconfirm
+    sudo pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --noconfirm
+    echo -e "[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist" | sudo tee -a /etc/pacman.conf
+}
 
-
-prompt NVIM-nvchad;if [[ $status == true ]] ;then
-sudo pacman -S nvim --noconfirm
-rm -rf ~/.config/nvim
-git clone https://github.com/firashacker/starter.git ~/.config/nvim
-fi
-
-prompt TimeZone;if [[ $status == true ]] ;then
-sudo hwclock --systohc
-sudo timedatectl set-ntp yes
-fi
-
-
-######
-######
-prompt wine;if [[ $status == true ]] ;then
-
-sudo pacman -S --needed wine-staging giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls \
-mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error \
-lib32-libgpg-error alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib libjpeg-turbo lib32-libjpeg-turbo \
-sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama \
-ncurses lib32-ncurses ocl-icd lib32-ocl-icd libxslt lib32-libxslt libva lib32-libva gtk3 \
-lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader
-echo net.ipv4.tcp_mtu_probing=1 | sudo tee /etc/sysctl.d/custom-mtu-probing.conf
-
-fi
-
-######
-######
-
-#prompt swayfx;if [[ $status == true ]] ;then
-#yay -S swayfx
-#fi
-
-#####
-#####
-
-
-prompt chaotic-aur;if [[ $status == true ]] ;then
-
-	sudo pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com
-	sudo pacman-key --lsign-key 3056513887B78AEB
-	sudo pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' --noconfirm
-	sudo pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --noconfirm
-	echo -e "[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist"|sudo tee -a /etc/pacman.conf
-
-
-fi
-
-####
-####
-
-
-prompt Razer-User;if [[ $status == true ]];then
-	sudo gpasswd -a $USER plugdev
-
-fi
-
-prompt OpenRGB;if [[ $status == true ]];then
-	sudo pacman -S i2c-tools openrgb --noconfirm
-
-fi
-
-prompt Disable-Systemd-CoreDump-Cache;if [[ $status == true ]] ;then
-	echo -e "\nStorage=none"|sudo tee -a /etc/systemd/coredump.conf
-fi
-
-prompt Reduce-systemd-shutdown-Timeout;if [[ $status == true ]] ;then
-	echo -e "\nDefaultTimeoutStopSec=10s" |sudo tee -a /etc/systemd/system.conf
-fi
-
-prompt Enable-VNC-RemoteDesktop;if [[ $status == true ]] ;then
-	~/.config/hypr/scripts/wayvnc_setup
-	sudo pacman -S wayvnc --noconfirm
-fi
-
-
-
-
-
-prompt NO_Password_Mount_Disk;if [[ $status == true ]] ;then
-sudo mkdir -p /etc/polkit-1/rules.d/
-echo 'polkit.addRule(function(action, subject) {
-    if ((action.id == "org.freedesktop.udisks2.filesystem-mount-system" ||
-         action.id == "org.freedesktop.udisks2.filesystem-mount") &&
-        subject.isInGroup("wheel")) {
-        return polkit.Result.YES;
-    }
-});' | sudo tee /etc/polkit-1/rules.d/10-udisks2.rules
-fi
-
-prompt Samba_Share;if [[ $status == true ]] ;then
-	mkdir -p ~/Share
-	sudo pacman -S samba
-	echo "
+configure_samba() {
+    mkdir -p ~/Share
+    sudo pacman -S samba --noconfirm
+    cat <<EOF | sudo tee /etc/samba/smb.conf
 [Share]
     comment = Shared Folder
     path = /home/${USER}/Share
@@ -153,20 +71,45 @@ prompt Samba_Share;if [[ $status == true ]] ;then
     valid users = ${USER}
     create mask = 0660
     directory mask = 0770
-    "|sudo tee /etc/samba/smb.conf
-	sudo smbpasswd -a $USER
-	sudo systemctl start smb
-fi
+EOF
+    sudo smbpasswd -a "$USER"
+    sudo systemctl start smb
+}
 
+clean_cache() {
+    echo "Cleaning cache folder..."
+    rm -rf ~/.cache/*
 
-prompt Clean-Cache;if [[ $status == true ]] ;then
+    echo "Cleaning pacman cache..."
+    sudo pacman -Rns $(pacman -Qdtq) --noconfirm || true
+    sudo pacman -Sc --noconfirm
+    sudo rm -rf /var/cache/pacman/pkg/*
+}
 
-	echo "cleaning cache folder"
-	rm -rf ~/.cache/*
-
-	echo "clean pacman cache"
-  sudo pacman -Runs $(pacman -Qtqd) --noconfirm
-	sudo pacman -Sc --noconfirm
-	sudo rm -r /var/cache/pacman/pkg/*
-
-fi
+### Prompts ###
+prompt yay-aur-helper && (( status == 1 )) && yay_install
+prompt sshd && (( status == 1 )) && sudo systemctl enable sshd
+prompt TMUX && (( status == 1 )) && install_tmux
+prompt NVIM-nvchad && (( status == 1 )) && install_nvim
+prompt TimeZone && (( status == 1 )) && { sudo hwclock --systohc; sudo timedatectl set-ntp yes; }
+prompt wine && (( status == 1 )) && install_wine
+prompt chaotic-aur && (( status == 1 )) && enable_chaotic_aur
+prompt Razer-User && (( status == 1 )) && sudo gpasswd -a "$USER" plugdev
+prompt OpenRGB && (( status == 1 )) && sudo pacman -S i2c-tools openrgb --noconfirm
+prompt Disable-Systemd-CoreDump-Cache && (( status == 1 )) && echo -e "\nStorage=none" | sudo tee -a /etc/systemd/coredump.conf
+prompt Reduce-systemd-shutdown-Timeout && (( status == 1 )) && echo -e "\nDefaultTimeoutStopSec=10s" | sudo tee -a /etc/systemd/system.conf
+prompt Enable-VNC-RemoteDesktop && (( status == 1 )) && { ~/.config/hypr/scripts/wayvnc_setup; sudo pacman -S wayvnc --noconfirm; }
+prompt NO_Password_Mount_Disk && (( status == 1 )) && {
+    sudo mkdir -p /etc/polkit-1/rules.d/
+    cat <<EOF | sudo tee /etc/polkit-1/rules.d/10-udisks2.rules
+polkit.addRule(function(action, subject) {
+    if ((action.id == "org.freedesktop.udisks2.filesystem-mount-system" ||
+         action.id == "org.freedesktop.udisks2.filesystem-mount") &&
+        subject.isInGroup("wheel")) {
+        return polkit.Result.YES;
+    }
+});
+EOF
+}
+prompt Samba_Share && (( status == 1 )) && configure_samba
+prompt Clean-Cache && (( status == 1 )) && clean_cache

@@ -1,21 +1,27 @@
 #!/bin/bash
+set -euo pipefail
+
 PIDFILE=/tmp/pipesbg.pid
 
-if [ -f "$PIDFILE" ]; then
+if [[ -f "$PIDFILE" ]]; then
     PID=$(cat "$PIDFILE")
-    # التأكد من أن العملية تخص kitty أو cava فعلياً قبل قتلها
-    if ps -p "$PID" > /dev/null; then
+    # تأكد أن العملية ما زالت فعالة
+    if ps -p "$PID" -o comm= | grep -Eq 'kitty|pipes.sh'; then
         kill "$PID"
-        rm "$PIDFILE"
-        notify-send -t 1000 "pipes bg killed "
-        echo "تم إيقاف النسخة السابقة."
+        rm -f "$PIDFILE"
+        notify-send -t 1000 "pipes bg killed (PID $PID)"
+        echo "تم إيقاف النسخة السابقة (PID $PID)."
         exit 0
+    else
+        echo "PID $PID ليس له علاقة بـ kitty/pipes.sh. تنظيف الملف."
+        rm -f "$PIDFILE"
     fi
 fi
 
 # تشغيل العملية في الخلفية وحفظ الـ PID الخاص بها
-kitty +kitten panel -o "background_opacity 0" --edge=background pipes.sh -t 3 & 
+kitty +kitten panel -o "background_opacity 0" --edge=background pipes.sh -t 3 &
 
-# حفظ الـ PID الخاص بـ kitty وليس السكربت
-echo $! > "$PIDFILE"
-notify-send -t 1000 "pipes bg started" 
+PID=$!
+echo "$PID" > "$PIDFILE"
+notify-send -t 1000 "pipes bg started (PID $PID)"
+echo "تم تشغيل pipes في الخلفية (PID $PID)."
