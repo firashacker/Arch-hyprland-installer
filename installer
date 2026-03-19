@@ -1052,7 +1052,7 @@ part_menu()
 		dlg choice menu 'Modify Partitions' "$_part\n\n$(lsblk -no NAME,MODEL,SIZE,FSTYPE,LABEL "$device")" \
 		    'back'   'Return to the device management menu'  \
 			'auto'   'Whole device automatic partitioning' \
-			 $( hash cfdisk  >/dev/null 2>&1 && printf \
+			$([[ -f /bin/cfdisk ]] && printf \
 			'cfdisk -') \
 			$([[ "$DISPLAY" ]] && hash gparted >/dev/null 2>&1 && printf \
 			'gparted -') || return 0
