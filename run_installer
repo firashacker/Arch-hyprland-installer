@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# check for internet
+if ping -c 1 -W 1 8.8.8.8 &> /dev/null; then
+    echo -e "\e[32mInternet is UP"
+elif hash nmtui &> /dev/null; then
+    echo -e "\e[33mNo connection. Launching Network Manager..."
+    nmtui
+else
+    echo -e "\e[31mError: Internet is DOWN and nmtui is not installed."
+    exit 1
+fi
+
+git pull
+
+chmod +x ./installer
+sudo ./installer
