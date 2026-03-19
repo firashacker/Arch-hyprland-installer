@@ -10,7 +10,7 @@ VER=2.27
 
 # default values {
 
-xhost +local:
+
 n=$(awk '/^NAME=/ {gsub(/^NAME=|"|'\''/, ""); print $1}' /etc/os-release 2> /dev/null)
 DIST=${n:-ArchLabs}
 MNT=/mnt                           # installation root mountpoint if not set
@@ -37,15 +37,13 @@ CMAPS="$(find /usr/share/kbd/keymaps -name '*.map.gz' | awk '{gsub(/\.map\.gz|.*
 
 export DIALOGOPTS="--cr-wrap"
 
+[[ $DISPLAY ]] && xhost +local:
+
 # package arrays built later from user selections
 typeset -a DRIVER_PKGS SES_PKGS USER_PKGS AUR_PKGS WM_PKGS
 
+typeset -a DRVPKGS UPKGS AURPKGS WMPKGS
 # }
-
-# default selected lists options
-DRVPKGS=(AMD-CPU INTEL-CPU AMD-GPU NVIDIA-GPU INTEL-GPU)
-
-
 
 # packages installed specific to archlabs, installed when any session is chosen {
 typeset -a BASE_PKGS=(
@@ -154,14 +152,14 @@ declare -A WM_EXT=(
 
 # complete this
 declare -A DRIVERS_EXT=(
-[AMD-GPU]='mesa vulkan-radeon lib32-mesa lib32-vulkan-radeon libva-mesa-driver libva-utils xf86-video-amdgpu'
-[NVIDIA-GPU]='linux-firmware-nvidia nvidia-open nvidia-utils nvidia-settings lib32-nvidia-utils nvidia-vaapi-driver'
-[INTEL-GPU]='mesa intel-media-driver vulkan-intel ib32-mesa lib32-vulkan-intel'
+[AMDGraphics]='mesa vulkan-radeon lib32-mesa lib32-vulkan-radeon libva-mesa-driver libva-utils xf86-video-amdgpu'
+[NVIDIAGraphics]='linux-firmware-nvidia nvidia-open nvidia-utils nvidia-settings lib32-nvidia-utils nvidia-vaapi-driver'
+[INTELGraphics]='mesa intel-media-driver vulkan-intel ib32-mesa lib32-vulkan-intel'
 [VirtualBox]='virtualbox-guest-utils'
 [Qemu]='virtio-gpu'
-[AMD-CPU]='amd-ucode'
-[INTEL-CPU]='intel-ucode'
-[RAZER]='openrazer-daemon openrazer-driver-dkms'
+[AMDProccessor]='amd-ucode'
+[INTELProccessor]='intel-ucode'
+[Razer]='openrazer-daemon openrazer-driver-dkms'
 ) # }
 
 
@@ -316,7 +314,7 @@ main()
 			3) prechecks 3 && { select_drivers || (( SEL-- )); } ;;
 			4) prechecks 4 && { select_sessions || (( SEL-- )); } ;;
 			5) prechecks 4 && { select_packages || (( SEL-- )); } ;;
-			6) prechecks 4 && select_aur ;;
+			6) prechecks 4 && { select_aur || (( SEL-- )); } ;;
 			7) prechecks 4 && select_usercmd ;;
 			8) prechecks 4 && select_show    ;;
 			9) prechecks 4 && install_main   ;;
@@ -349,10 +347,10 @@ main()
 			2) mount_menu || SEL=0 ;;
 			3) prechecks 1 && { select_mkuser   || (( SEL-- )); } ;;
 			4) prechecks 2 && { select_config   || (( SEL-- )); } ;;
-			5) prechecks 3 && { select_drivers || (( SEL-- )); } ;;
-			6) prechecks 4 && { select_sessions || (( SEL-- )); } ;;
-			7) prechecks 4 && { select_packages || (( SEL-- )); } ;;
-			8) prechecks 4 && select_aur ;;
+			5) prechecks 0 && { select_drivers || (( SEL-- )); } ;;
+			6) prechecks 0 && { select_sessions || (( SEL-- )); } ;;
+			7) prechecks 0 && { select_packages || (( SEL-- )); } ;;
+			8) prechecks 0 && { select_aur || (( SEL-- )); } ;;
 			9) prechecks 4 && select_usercmd ;;
 			10) prechecks 4 && select_show ;;
 			11) prechecks 4 && install_main ;;
@@ -423,22 +421,30 @@ select_show()
 
 select_drivers()
 {
-	typeset -a pkgs
+	typeset -a pkgs choosen
 	DRIVER_PKGS=()
+	# If the array is empty AND we haven't set the defaults yet
+    if [[ ${#DRVPKGS[@]} -eq 0 && -z "$DRVPKGS_DEFAULTS_SET" ]]; then
+        DRVPKGS=(AMDProccessor INTELProccessor AMDGraphics NVIDIAGraphics INTELGraphics)
+        DRVPKGS_DEFAULTS_SET=1
+    fi
+    local -a CURRENT_SELECTIONS=${DRVPKGS[@]}
+    DRVPKGS=()
 	dlg DRVPKGS check "Drivers" "\nSelect drivers to install for your hardware.\n" \
-	    AMD-CPU "cpu microcodes for AMD" "$(ofn AMD-CPU "${DRVPKGS[*]}")" \
-		INTEL-CPU "cpu microcodes for INTEL" "$(ofn INTEL-CPU "${DRVPKGS[*]}")" \
-	    AMD-GPU "Graphics drivers for AMD graphics cards" "$(ofn AMD-GPU "${DRVPKGS[*]}")" \
-		NVIDIA-GPU "Graphics drivers for NVIDIA graphics cards"  "$(ofn NVIDIA-GPU "${DRVPKGS[*]}")" \
-		INTEL-GPU "Graphics drivers for INTEL graphics cards" "$(ofn INTEL-GPU "${DRVPKGS[*]}")" \
-		RAZER "Kernel driver (DKMS) for Razer hardware support" "$(ofn RAZER "${DRVPKGS[*]}")" \
-		VirtualBox "VirualBox VM Tools" "$(ofn VirtualBox "${DRVPKGS[*]}")" \
-		Qemu "Qemu VM guest drivers" "$(ofn Qemu "${DRVPKGS[*]}")" || return 1
+	    AMDProccessor "cpu microcodes for AMD" "$(ofn AMDProccessor "${CURRENT_SELECTIONS[*]}")" \
+		INTELProccessor "cpu microcodes for INTEL" "$(ofn INTELProccessor "${CURRENT_SELECTIONS[*]}")" \
+	    AMDGraphics "Graphics drivers for AMD graphics cards" "$(ofn AMDGraphics "${CURRENT_SELECTIONS[*]}")" \
+		NVIDIAGraphics "Graphics drivers for NVIDIA graphics cards"  "$(ofn NVIDIAGraphics "${CURRENT_SELECTIONS[*]}")" \
+		INTELGraphics "Graphics drivers for INTEL graphics cards" "$(ofn INTELGraphics "${CURRENT_SELECTIONS[*]}")" \
+		Razer "Kernel driver (DKMS) for Razer hardware support" "$(ofn Razer "${CURRENT_SELECTIONS[*]}")" \
+		VirtualBox "VirualBox VM Tools" "$(ofn VirtualBox "${CURRENT_SELECTIONS[*]}")" \
+		Qemu "Qemu VM guest drivers" "$(ofn Qemu "${CURRENT_SELECTIONS[*]}")"
+    echo
+	#[[ $DRVPKGS ]] || return 0
 
-
-	[[ $DRVPKGS ]] || return 0
-
-	for i in $DRVPKGS; do
+	#echo ${DRVPKGS[@]} >> ./drivers
+	#echo "-------------" >> ./drivers
+	for i in ${DRVPKGS}; do
 	    #[[ ${DRIVER_PKGS[*]} != *"$i"* ]] && DRIVER_PKGS+=($i)
 		if [[ ${DRIVERS_EXT[$i]} ]]; then
 			for j in ${DRIVERS_EXT[$i]}; do
@@ -448,11 +454,12 @@ select_drivers()
 	done
 
 
+    DRIVER_PKGS=("${pkgs[@]}")
+    #echo ${DRIVER_PKGS[@]} >> ./driverspkgs
+	#echo "-------------" >> ./driverspkgs
+	#for pkg in "${pkgs[@]}"; do [[ ${DRIVER_PKGS[*]} != *"$pkg"* ]] && DRIVER_PKGS+=("$pkg"); done
 
-
-	for pkg in "${pkgs[@]}"; do [[ ${DRIVER_PKGS[*]} != *"$pkg"* ]] && DRIVER_PKGS+=("$pkg"); done
-
-	{ [[ $INSTALL_DRIVERS ]] && echo "$INSTALL_DRIVERS" > /tmp/driverlist; } || rm -f /tmp/driverlist
+	{ [[ $DRVPKGS ]] && echo "$DRVPKGS" > /tmp/driverlist; } || rm -f /tmp/driverlist
 
 	return 0
 }
@@ -787,16 +794,22 @@ select_sessions()
 {
 	typeset -a pkgs
 	LOGIN_CHOICES=''
-	WM_PKGS=()
-    [[ $WMPKGS ]] || WMPKGS=(hyprland)
+	# If the array is empty AND we haven't set the defaults yet
+	if [[ ${#WMPKGS[@]} -eq 0 && -z "$WMPKGS_DEFAULTS_SET" ]]; then
+	    WMPKGS=(hyprland)
+        WMPKGS_DEFAULTS_SET=1
+    fi
+    local -a CURRENT_SELECTIONS=${WMPKGS[@]}
+    WMPKGS=()
 	dlg WMPKGS check "Sessions" "$_sessions\n" \
-	    hyprland "highly customizable, wayland dynamic tiling window manager and compositor for Linux" "$(ofn hyprland "${WMPKGS[*]}")" \
-		gnome  "GNOME desktop" "$(ofn gnome "${WMPKGS[*]}")" \
-		plasma "kde-plasma desktop" "$(ofn plasma "${WMPKGS[*]}")" || return 1
-
-	[[ $WMPKGS ]] || return 0
+	    hyprland "highly customizable, wayland dynamic tiling window manager and compositor for Linux" "$(ofn hyprland "${CURRENT_SELECTIONS[*]}")" \
+		gnome  "GNOME desktop" "$(ofn gnome "${CURRENT_SELECTIONS[*]}")" \
+		plasma "kde-plasma desktop" "$(ofn plasma "${CURRENT_SELECTIONS[*]}")" || return 0
 
 
+
+    #echo ${WMPKGS[@]} >> ./wm
+    #echo "-----------" >>./wm
 
 	for i in $WMPKGS; do
 		LOGIN_CHOICES+="$i - "
@@ -809,7 +822,11 @@ select_sessions()
 
 	select_login || return 1
 
-	for pkg in "${pkgs[@]}"; do [[ ${WM_PKGS[*]} != *"$pkg"* ]] && WM_PKGS+=("$pkg"); done
+    WM_PKGS=("${pkgs[@]}")
+
+    #echo ${WM_PKGS[@]} >> ./wmpkgs
+    #echo "-----------" >>./wmpkgs
+	#for pkg in "${pkgs[@]}"; do [[ ${WM_PKGS[*]} != *"$pkg"* ]] && WM_PKGS+=("$pkg"); done
 
 	{ [[ $WMPKGS ]] && echo "$WMPKGS" > /tmp/wmlist; } || rm -f /tmp/wmlist
 
@@ -818,117 +835,123 @@ select_sessions()
 
 select_packages()
 {
-    USER_PKGS=()
-	[[ $UPKGS ]] || UPKGS=(eza kitty atril firefox steam gamemode mangohud obs-studio gparted timeshift yad qdirstat bluez blueman kvantum thunar xarchiver )
+
+    # If the array is empty AND we haven't set the defaults yet
+    if [[ ${#UPKGS[@]} -eq 0 && -z "$USERPKGS_DEFAULTS_SET" ]]; then
+        UPKGS=(eza kitty atril firefox steam gamemode mangohud obs-studio gparted timeshift yad qdirstat bluez blueman kvantum thunar xarchiver )
+        USERPKGS_DEFAULTS_SET=1
+    fi
+    local -a CURRENT_SELECTIONS=${UPKGS[@]}
+    UPKGS=()
 	dlg UPKGS check " Packages " "$_packages" \
-		abiword "A Fully-featured word processor" "$(ofn abiword "${UPKGS[*]}")" \
-		alacritty "A cross-platform, GPU-accelerated terminal emulator" "$(ofn alacritty "${UPKGS[*]}")" \
-		atom "An open-source text editor developed by GitHub" "$(ofn atom "${UPKGS[*]}")" \
-		atril "Lightweight document viewer (PDF, PostScript, etc.)" "$(ofn atril "${UPKGS[*]}")" \
-		audacious "A free and advanced audio player based on GTK+" "$(ofn audacious "${UPKGS[*]}")" \
-		audacity "A program that lets you manipulate digital audio waveforms" "$(ofn audacity "${UPKGS[*]}")" \
-		base-devel "A group of packages required for AUR" "$(ofn base-devel "${UPKGS[*]}")" \
-		blueman "GUI bluetooth device manager" "$(ofn blueman "${UPKGS[*]}")" \
-		bluez "Simple CLI based bluetooth support" "$(ofn bluez "${UPKGS[*]}")" \
-		cairo-dock "Light eye-candy fully themable animated dock" "$(ofn cairo-dock "${UPKGS[*]}")" \
-		calligra "A set of applications for productivity" "$(ofn calligra "${UPKGS[*]}")" \
-		chromium "An open-source web browser based on the Blink rendering engine" "$(ofn chromium "${UPKGS[*]}")" \
-		clementine "A modern music player and library organizer" "$(ofn clementine "${UPKGS[*]}")" \
-		cmus "A small, fast and powerful console music player" "$(ofn cmus "${UPKGS[*]}")" \
-		deluge "A bittorrent client written in python" "$(ofn deluge "${UPKGS[*]}")" \
-		elinks "An advanced and well-established feature-rich text mode web browser" "$(ofn elinks "${UPKGS[*]}")" \
-		emacs "An extensible, customizable, self-documenting real-time display editor" "$(ofn emacs "${UPKGS[*]}")" \
-		epiphany "A GNOME web browser based on the WebKit rendering engine" "$(ofn epiphany "${UPKGS[*]}")" \
-		evince "A document viewer" "$(ofn evince "${UPKGS[*]}")" \
-		evolution "Manage your email, contacts and schedule" "$(ofn evolution "${UPKGS[*]}")" \
-		eza "Shell 'ls' alternative with Style" "$(ofn eza "${UPKGS[*]}")" \
-		file-roller "Create and modify archives" "$(ofn file-roller "${UPKGS[*]}")" \
-		firefox "A popular open-source web browser from Mozilla" "$(ofn firefox "${UPKGS[*]}")" \
-		gamemode "Optimizes system performance for games on demand" "$(ofn gamemode "${UPKGS[*]}")" \
-		gcolor2 "A simple GTK+2 color selector" "$(ofn gcolor2 "${UPKGS[*]}")" \
-		geany "A fast and lightweight IDE" "$(ofn geany "${UPKGS[*]}")" \
-		geary "A lightweight email client for the GNOME desktop" "$(ofn geary "${UPKGS[*]}")" \
-		gimp "GNU Image Manipulation Program" "$(ofn gimp "${UPKGS[*]}")" \
-		git "The fast distributed version control system" "$(ofn git "${UPKGS[*]}")" \
-		gnome-calculator "GNOME Scientific calculator" "$(ofn gnome-calculator "${UPKGS[*]}")" \
-		gnome-disk-utility "Disk Management Utility" "$(ofn gnome-disk-utility "${UPKGS[*]}")" \
-		gnome-system-monitor "View current processes and monitor system state" "$(ofn gnome-system-monitor "${UPKGS[*]}")" \
-		gparted "A GUI frontend for creating and manipulating partition tables" "$(ofn gparted "${UPKGS[*]}")" \
-		gpick "Advanced color picker using GTK+ toolkit" "$(ofn gpick "${UPKGS[*]}")" \
-		gpicview "Lightweight image viewer" "$(ofn gpicview "${UPKGS[*]}")" \
-		guvcview "Capture video from camera devices" "$(ofn guvcview "${UPKGS[*]}")" \
-		hexchat "A popular and easy to use graphical IRC client" "$(ofn hexchat "${UPKGS[*]}")" \
-		inkscape "Professional vector graphics editor" "$(ofn inkscape "${UPKGS[*]}")" \
-		irssi "A modular text mode IRC client with Perl scripting" "$(ofn irssi "${UPKGS[*]}")" \
-		kdenlive "A popular non-linear video editor for Linux" "$(ofn kdenlive "${UPKGS[*]}")" \
-		kitty "A cross-platform, GPU-accelerated terminal emulator" "$(ofn kitty "${UPKGS[*]}")" \
-		krita "Edit and paint images" "$(ofn krita "${UPKGS[*]}")" \
-		kvantum "GUI for managing Qt based application themes" "$(ofn kvantum "${UPKGS[*]}")" \
-		libreoffice-fresh "Full featured office suite" "$(ofn libreoffice-fresh "${UPKGS[*]}")" \
-		lollypop "A new music playing application" "$(ofn lollypop "${UPKGS[*]}")" \
-		mangohud  "Vulkan/OpenGL overlay for monitoring FPS and hardware" "$(ofn mangohud "${UPKGS[*]}")" \
-		mc "A file manager that imitates Norton Commander" "$(ofn mc "${UPKGS[*]}")" \
-		mousepad "A simple text editor" "$(ofn mousepad "${UPKGS[*]}")" \
-		mpd "A flexible, powerful, server-side application for playing music" "$(ofn mpd "${UPKGS[*]}")" \
-		mpv "A media player based on mplayer" "$(ofn mpv "${UPKGS[*]}")" \
-		mupdf "Lightweight PDF and XPS viewer" "$(ofn mupdf "${UPKGS[*]}")" \
-		mutt "Small but very powerful text-based mail client" "$(ofn mutt "${UPKGS[*]}")" \
-		nano "Pico editor clone with enhancements" "$(ofn nano "${UPKGS[*]}")" \
-		nautilus "The default file manager for Gnome" "$(ofn nautilus "${UPKGS[*]}")" \
-		ncmpcpp "A mpd client and almost exact clone of ncmpc with some new features" "$(ofn ncmpcpp "${UPKGS[*]}")" \
-		neovim "A fork of Vim aiming to improve user experience, plugins, and GUIs." "$(ofn neovim "${UPKGS[*]}")" \
-		nmap "Utility for network discovery and security auditing" "$(ofn nmap "${UPKGS[*]}")" \
-		noto-fonts "Google Noto fonts" "$(ofn noto-fonts "${UPKGS[*]}")" \
-		noto-fonts-cjk "Google Noto CJK fonts (Chinese, Japanese, Korean)" "$(ofn noto-fonts-cjk "${UPKGS[*]}")" \
-		ntfs-3g "NTFS file system driver and utilities" "$(ofn ntfs-3g "${UPKGS[*]}")" \
-		obs-studio "Free opensource streaming/recording software" "$(ofn obs-studio "${UPKGS[*]}")" \
-		openshot "An open-source, non-linear video editor for Linux" "$(ofn openshot "${UPKGS[*]}")" \
-		opera "A Fast and secure, free of charge web browser from Opera Software" "$(ofn opera "${UPKGS[*]}")" \
-		pcmanfm "A fast and lightweight file manager based in Lxde" "$(ofn pcmanfm "${UPKGS[*]}")" \
-		pidgin "Multi-protocol instant messaging client" "$(ofn pidgin "${UPKGS[*]}")" \
-		plank "An elegant, simple, and clean dock" "$(ofn plank "${UPKGS[*]}")" \
-		playerctl "Media player controller for spotify, vlc, audacious, bmp, xmms2, and others." "$(ofn playerctl "${UPKGS[*]}")" \
-		qbittorrent "An advanced bittorrent client" "$(ofn qbittorrent "${UPKGS[*]}")" \
-		qdirstat "Qt-based directory statistics: KDirStat without any KDE -- from the author of the original KDirStat" "$(ofn qdirstat "${UPKGS[*]}")" \
-		qt5ct "GUI for managing Qt based application themes, icons, and fonts" "$(ofn qt5ct "${UPKGS[*]}")" \
-		qutebrowser "A keyboard-focused vim-like web browser based on Python and PyQt5" "$(ofn qutebrowser "${UPKGS[*]}")" \
-		ranger "A simple vim-like file manager" "$(ofn ranger "${UPKGS[*]}")" \
-		rhythmbox "A Music playback and management application" "$(ofn rhythmbox "${UPKGS[*]}")" \
-		rxvt-unicode "A unicode enabled rxvt-clone terminal emulator" "$(ofn rxvt-unicode "${UPKGS[*]}")" \
-		simple-scan "Simple scanning utility" "$(ofn simple-scan "${UPKGS[*]}")" \
-		simplescreenrecorder "A feature-rich screen recorder" "$(ofn simplescreenrecorder "${UPKGS[*]}")" \
-		steam "A popular game distribution platform by Valve" "$(ofn steam "${UPKGS[*]}")" \
-		surf "A simple web browser based on WebKit2/GTK+" "$(ofn surf "${UPKGS[*]}")" \
-		terminator "Terminal emulator that supports tabs and grids" "$(ofn terminator "${UPKGS[*]}")" \
-		thunar "A modern file manager for the Xfce Desktop Environment" "$(ofn thunar "${UPKGS[*]}")" \
-		thunderbird "Standalone mail and news reader from mozilla" "$(ofn thunderbird "${UPKGS[*]}")" \
-		tilda "A GTK based drop down terminal for Linux and Unix" "$(ofn tilda "${UPKGS[*]}")" \
-		tilix "A tiling terminal emulator for Linux using GTK+ 3" "$(ofn tilix "${UPKGS[*]}")" \
-		timeshift "System restore utility (snapshot tool)" "$(ofn timeshift "${UPKGS[*]}")" \
-		transmission-cli "Free bittorrent client CLI" "$(ofn transmission-cli "${UPKGS[*]}")" \
-		unrar "The RAR compression program" "$(ofn unrar "${UPKGS[*]}")" \
-		transmission-gtk "GTK+ Front end for transmission" "$(ofn transmission-gtk "${UPKGS[*]}")" \
-		transmission-qt "Qt Front end for transmission" "$(ofn transmission-qt "${UPKGS[*]}")" \
-		ttf-anonymous-pro "A family fixed-width fonts designed with code in mind" "$(ofn ttf-anonymous-pro "${UPKGS[*]}")" \
-		ttf-fira-code "Monospaced font with programming ligatures" "$(ofn ttf-fira-code "${UPKGS[*]}")" \
-		ttf-font-awesome "Iconic font designed for Bootstrap" "$(ofn ttf-font-awesome "${UPKGS[*]}")" \
-		ttf-hack "A hand groomed typeface based on Bitstream Vera Mono" "$(ofn ttf-hack "${UPKGS[*]}")" \
-		vim "Vi Improved, a highly configurable, improved version of the vi text editor" "$(ofn vim "${UPKGS[*]}")" \
-		vlc "A free and open source cross-platform multimedia player" "$(ofn vlc "${UPKGS[*]}")" \
-		weechat "Fast, light and extensible IRC client" "$(ofn weechat "${UPKGS[*]}")" \
-		wget "Network utility to retrieve files from the Web" "$(ofn wget "${UPKGS[*]}")" \
-		xapps "Common library for X-Apps project" "$(ofn xapps "${UPKGS[*]}")" \
-		xarchiver "A GTK+ frontend to various command line archivers" "$(ofn xarchiver "${UPKGS[*]}")" \
-		xed "A small and lightweight text editor. X-Apps Project." "$(ofn xed "${UPKGS[*]}")" \
-		xfce4-terminal "A terminal emulator based in the Xfce Desktop Environment" "$(ofn xfce4-terminal "${UPKGS[*]}")" \
-		xreader "Document viewer for files like PDF and Postscript. X-Apps Project." "$(ofn xed "${UPKGS[*]}")" \
-		yad "Tool to create graphical dialogs from shell scripts" "$(ofn yad "${UPKGS[*]}")" \
-		zathura "Minimalistic document viewer" "$(ofn zathura "${UPKGS[*]}")"
+		abiword "A Fully-featured word processor" "$(ofn abiword "${CURRENT_SELECTIONS[*]}")" \
+		alacritty "A cross-platform, GPU-accelerated terminal emulator" "$(ofn alacritty "${CURRENT_SELECTIONS[*]}")" \
+		atom "An open-source text editor developed by GitHub" "$(ofn atom "${CURRENT_SELECTIONS[*]}")" \
+		atril "Lightweight document viewer (PDF, PostScript, etc.)" "$(ofn atril "${CURRENT_SELECTIONS[*]}")" \
+		audacious "A free and advanced audio player based on GTK+" "$(ofn audacious "${CURRENT_SELECTIONS[*]}")" \
+		audacity "A program that lets you manipulate digital audio waveforms" "$(ofn audacity "${CURRENT_SELECTIONS[*]}")" \
+		base-devel "A group of packages required for AUR" "$(ofn base-devel "${CURRENT_SELECTIONS[*]}")" \
+		blueman "GUI bluetooth device manager" "$(ofn blueman "${CURRENT_SELECTIONS[*]}")" \
+		bluez "Simple CLI based bluetooth support" "$(ofn bluez "${CURRENT_SELECTIONS[*]}")" \
+		cairo-dock "Light eye-candy fully themable animated dock" "$(ofn cairo-dock "${CURRENT_SELECTIONS[*]}")" \
+		calligra "A set of applications for productivity" "$(ofn calligra "${CURRENT_SELECTIONS[*]}")" \
+		chromium "An open-source web browser based on the Blink rendering engine" "$(ofn chromium "${CURRENT_SELECTIONS[*]}")" \
+		clementine "A modern music player and library organizer" "$(ofn clementine "${CURRENT_SELECTIONS[*]}")" \
+		cmus "A small, fast and powerful console music player" "$(ofn cmus "${CURRENT_SELECTIONS[*]}")" \
+		deluge "A bittorrent client written in python" "$(ofn deluge "${CURRENT_SELECTIONS[*]}")" \
+		elinks "An advanced and well-established feature-rich text mode web browser" "$(ofn elinks "${CURRENT_SELECTIONS[*]}")" \
+		emacs "An extensible, customizable, self-documenting real-time display editor" "$(ofn emacs "${CURRENT_SELECTIONS[*]}")" \
+		epiphany "A GNOME web browser based on the WebKit rendering engine" "$(ofn epiphany "${CURRENT_SELECTIONS[*]}")" \
+		evince "A document viewer" "$(ofn evince "${CURRENT_SELECTIONS[*]}")" \
+		evolution "Manage your email, contacts and schedule" "$(ofn evolution "${CURRENT_SELECTIONS[*]}")" \
+		eza "Shell 'ls' alternative with Style" "$(ofn eza "${CURRENT_SELECTIONS[*]}")" \
+		file-roller "Create and modify archives" "$(ofn file-roller "${CURRENT_SELECTIONS[*]}")" \
+		firefox "A popular open-source web browser from Mozilla" "$(ofn firefox "${CURRENT_SELECTIONS[*]}")" \
+		gamemode "Optimizes system performance for games on demand" "$(ofn gamemode "${CURRENT_SELECTIONS[*]}")" \
+		gcolor2 "A simple GTK+2 color selector" "$(ofn gcolor2 "${CURRENT_SELECTIONS[*]}")" \
+		geany "A fast and lightweight IDE" "$(ofn geany "${CURRENT_SELECTIONS[*]}")" \
+		geary "A lightweight email client for the GNOME desktop" "$(ofn geary "${CURRENT_SELECTIONS[*]}")" \
+		gimp "GNU Image Manipulation Program" "$(ofn gimp "${CURRENT_SELECTIONS[*]}")" \
+		git "The fast distributed version control system" "$(ofn git "${CURRENT_SELECTIONS[*]}")" \
+		gnome-calculator "GNOME Scientific calculator" "$(ofn gnome-calculator "${CURRENT_SELECTIONS[*]}")" \
+		gnome-disk-utility "Disk Management Utility" "$(ofn gnome-disk-utility "${CURRENT_SELECTIONS[*]}")" \
+		gnome-system-monitor "View current processes and monitor system state" "$(ofn gnome-system-monitor "${CURRENT_SELECTIONS[*]}")" \
+		gparted "A GUI frontend for creating and manipulating partition tables" "$(ofn gparted "${CURRENT_SELECTIONS[*]}")" \
+		gpick "Advanced color picker using GTK+ toolkit" "$(ofn gpick "${CURRENT_SELECTIONS[*]}")" \
+		gpicview "Lightweight image viewer" "$(ofn gpicview "${CURRENT_SELECTIONS[*]}")" \
+		guvcview "Capture video from camera devices" "$(ofn guvcview "${CURRENT_SELECTIONS[*]}")" \
+		hexchat "A popular and easy to use graphical IRC client" "$(ofn hexchat "${CURRENT_SELECTIONS[*]}")" \
+		inkscape "Professional vector graphics editor" "$(ofn inkscape "${CURRENT_SELECTIONS[*]}")" \
+		irssi "A modular text mode IRC client with Perl scripting" "$(ofn irssi "${CURRENT_SELECTIONS[*]}")" \
+		kdenlive "A popular non-linear video editor for Linux" "$(ofn kdenlive "${CURRENT_SELECTIONS[*]}")" \
+		kitty "A cross-platform, GPU-accelerated terminal emulator" "$(ofn kitty "${CURRENT_SELECTIONS[*]}")" \
+		krita "Edit and paint images" "$(ofn krita "${CURRENT_SELECTIONS[*]}")" \
+		kvantum "GUI for managing Qt based application themes" "$(ofn kvantum "${CURRENT_SELECTIONS[*]}")" \
+		libreoffice-fresh "Full featured office suite" "$(ofn libreoffice-fresh "${CURRENT_SELECTIONS[*]}")" \
+		lollypop "A new music playing application" "$(ofn lollypop "${CURRENT_SELECTIONS[*]}")" \
+		mangohud  "Vulkan/OpenGL overlay for monitoring FPS and hardware" "$(ofn mangohud "${CURRENT_SELECTIONS[*]}")" \
+		mc "A file manager that imitates Norton Commander" "$(ofn mc "${CURRENT_SELECTIONS[*]}")" \
+		mousepad "A simple text editor" "$(ofn mousepad "${CURRENT_SELECTIONS[*]}")" \
+		mpd "A flexible, powerful, server-side application for playing music" "$(ofn mpd "${CURRENT_SELECTIONS[*]}")" \
+		mpv "A media player based on mplayer" "$(ofn mpv "${CURRENT_SELECTIONS[*]}")" \
+		mupdf "Lightweight PDF and XPS viewer" "$(ofn mupdf "${CURRENT_SELECTIONS[*]}")" \
+		mutt "Small but very powerful text-based mail client" "$(ofn mutt "${CURRENT_SELECTIONS[*]}")" \
+		nano "Pico editor clone with enhancements" "$(ofn nano "${CURRENT_SELECTIONS[*]}")" \
+		nautilus "The default file manager for Gnome" "$(ofn nautilus "${CURRENT_SELECTIONS[*]}")" \
+		ncmpcpp "A mpd client and almost exact clone of ncmpc with some new features" "$(ofn ncmpcpp "${CURRENT_SELECTIONS[*]}")" \
+		neovim "A fork of Vim aiming to improve user experience, plugins, and GUIs." "$(ofn neovim "${CURRENT_SELECTIONS[*]}")" \
+		nmap "Utility for network discovery and security auditing" "$(ofn nmap "${CURRENT_SELECTIONS[*]}")" \
+		noto-fonts "Google Noto fonts" "$(ofn noto-fonts "${CURRENT_SELECTIONS[*]}")" \
+		noto-fonts-cjk "Google Noto CJK fonts (Chinese, Japanese, Korean)" "$(ofn noto-fonts-cjk "${CURRENT_SELECTIONS[*]}")" \
+		ntfs-3g "NTFS file system driver and utilities" "$(ofn ntfs-3g "${CURRENT_SELECTIONS[*]}")" \
+		obs-studio "Free opensource streaming/recording software" "$(ofn obs-studio "${CURRENT_SELECTIONS[*]}")" \
+		openshot "An open-source, non-linear video editor for Linux" "$(ofn openshot "${CURRENT_SELECTIONS[*]}")" \
+		opera "A Fast and secure, free of charge web browser from Opera Software" "$(ofn opera "${CURRENT_SELECTIONS[*]}")" \
+		pcmanfm "A fast and lightweight file manager based in Lxde" "$(ofn pcmanfm "${CURRENT_SELECTIONS[*]}")" \
+		pidgin "Multi-protocol instant messaging client" "$(ofn pidgin "${CURRENT_SELECTIONS[*]}")" \
+		plank "An elegant, simple, and clean dock" "$(ofn plank "${CURRENT_SELECTIONS[*]}")" \
+		playerctl "Media player controller for spotify, vlc, audacious, bmp, xmms2, and others." "$(ofn playerctl "${CURRENT_SELECTIONS[*]}")" \
+		qbittorrent "An advanced bittorrent client" "$(ofn qbittorrent "${CURRENT_SELECTIONS[*]}")" \
+		qdirstat "Qt-based directory statistics: KDirStat without any KDE -- from the author of the original KDirStat" "$(ofn qdirstat "${CURRENT_SELECTIONS[*]}")" \
+		qt5ct "GUI for managing Qt based application themes, icons, and fonts" "$(ofn qt5ct "${CURRENT_SELECTIONS[*]}")" \
+		qutebrowser "A keyboard-focused vim-like web browser based on Python and PyQt5" "$(ofn qutebrowser "${CURRENT_SELECTIONS[*]}")" \
+		ranger "A simple vim-like file manager" "$(ofn ranger "${CURRENT_SELECTIONS[*]}")" \
+		rhythmbox "A Music playback and management application" "$(ofn rhythmbox "${CURRENT_SELECTIONS[*]}")" \
+		rxvt-unicode "A unicode enabled rxvt-clone terminal emulator" "$(ofn rxvt-unicode "${CURRENT_SELECTIONS[*]}")" \
+		simple-scan "Simple scanning utility" "$(ofn simple-scan "${CURRENT_SELECTIONS[*]}")" \
+		simplescreenrecorder "A feature-rich screen recorder" "$(ofn simplescreenrecorder "${CURRENT_SELECTIONS[*]}")" \
+		steam "A popular game distribution platform by Valve" "$(ofn steam "${CURRENT_SELECTIONS[*]}")" \
+		surf "A simple web browser based on WebKit2/GTK+" "$(ofn surf "${CURRENT_SELECTIONS[*]}")" \
+		terminator "Terminal emulator that supports tabs and grids" "$(ofn terminator "${CURRENT_SELECTIONS[*]}")" \
+		thunar "A modern file manager for the Xfce Desktop Environment" "$(ofn thunar "${CURRENT_SELECTIONS[*]}")" \
+		thunderbird "Standalone mail and news reader from mozilla" "$(ofn thunderbird "${CURRENT_SELECTIONS[*]}")" \
+		tilda "A GTK based drop down terminal for Linux and Unix" "$(ofn tilda "${CURRENT_SELECTIONS[*]}")" \
+		tilix "A tiling terminal emulator for Linux using GTK+ 3" "$(ofn tilix "${CURRENT_SELECTIONS[*]}")" \
+		timeshift "System restore utility (snapshot tool)" "$(ofn timeshift "${CURRENT_SELECTIONS[*]}")" \
+		transmission-cli "Free bittorrent client CLI" "$(ofn transmission-cli "${CURRENT_SELECTIONS[*]}")" \
+		unrar "The RAR compression program" "$(ofn unrar "${CURRENT_SELECTIONS[*]}")" \
+		transmission-gtk "GTK+ Front end for transmission" "$(ofn transmission-gtk "${CURRENT_SELECTIONS[*]}")" \
+		transmission-qt "Qt Front end for transmission" "$(ofn transmission-qt "${CURRENT_SELECTIONS[*]}")" \
+		ttf-anonymous-pro "A family fixed-width fonts designed with code in mind" "$(ofn ttf-anonymous-pro "${CURRENT_SELECTIONS[*]}")" \
+		ttf-fira-code "Monospaced font with programming ligatures" "$(ofn ttf-fira-code "${CURRENT_SELECTIONS[*]}")" \
+		ttf-font-awesome "Iconic font designed for Bootstrap" "$(ofn ttf-font-awesome "${CURRENT_SELECTIONS[*]}")" \
+		ttf-hack "A hand groomed typeface based on Bitstream Vera Mono" "$(ofn ttf-hack "${CURRENT_SELECTIONS[*]}")" \
+		vim "Vi Improved, a highly configurable, improved version of the vi text editor" "$(ofn vim "${CURRENT_SELECTIONS[*]}")" \
+		vlc "A free and open source cross-platform multimedia player" "$(ofn vlc "${CURRENT_SELECTIONS[*]}")" \
+		weechat "Fast, light and extensible IRC client" "$(ofn weechat "${CURRENT_SELECTIONS[*]}")" \
+		wget "Network utility to retrieve files from the Web" "$(ofn wget "${CURRENT_SELECTIONS[*]}")" \
+		xapps "Common library for X-Apps project" "$(ofn xapps "${CURRENT_SELECTIONS[*]}")" \
+		xarchiver "A GTK+ frontend to various command line archivers" "$(ofn xarchiver "${CURRENT_SELECTIONS[*]}")" \
+		xed "A small and lightweight text editor. X-Apps Project." "$(ofn xed "${CURRENT_SELECTIONS[*]}")" \
+		xfce4-terminal "A terminal emulator based in the Xfce Desktop Environment" "$(ofn xfce4-terminal "${CURRENT_SELECTIONS[*]}")" \
+		xreader "Document viewer for files like PDF and Postscript. X-Apps Project." "$(ofn xed "${CURRENT_SELECTIONS[*]}")" \
+		yad "Tool to create graphical dialogs from shell scripts" "$(ofn yad "${CURRENT_SELECTIONS[*]}")" \
+		zathura "Minimalistic document viewer" "$(ofn zathura "${CURRENT_SELECTIONS[*]}")"
 
 
 
-
-	if [[ $UPKGS ]]; then    # add any needed PKG_EXT to the list
+    USER_PKGS=()
+	#if [[ $UPKGS ]]; then    # add any needed PKG_EXT to the list
 		for i in $UPKGS; do
 			[[ ${USER_PKGS[*]} != *"$i"* ]] && USER_PKGS+=("$i")
 			if [[ ${PKG_EXT[$i]} ]]; then
@@ -937,7 +960,7 @@ select_packages()
 				done
 			fi
 		done
-	fi
+	#fi
 
 	return 0
 }
@@ -947,20 +970,22 @@ select_packages()
 select_aur()
 {
     AUR_PKGS=()
-    [[ $AURPKGS ]] || AURPKGS=(upd72020x-fw wd719x-firmware arc-gtk-theme)
+    # If the array is empty AND we haven't set the defaults yet
+    if [[ ${#AURPKGS[@]} -eq 0 && -z "$AUR_DEFAULTS_SET" ]]; then
+        AURPKGS=(upd72020x-fw wd719x-firmware arc-gtk-theme)
+        AUR_DEFAULTS_SET=1
+    fi
+    local -a CURRENT_SELECTIONS=${AURPKGS[@]}
+    AURPKGS=()
 	dlg AURPKGS check "AUR Packages " "$_packages" \
-		upd72020x-fw "Renesas uPD720201 / uPD720202 USB 3.0 chipsets firmware" "$(ofn upd72020x-fw "${AURPKGS[*]}")" \
-		wd719x-firmware "Firmware for Western Digital WD7193, WD7197, and WD7296 SCSI cards" "$(ofn wd719x-firmware "${AURPKGS[*]}")" \
-		arc-gtk-theme "A flat theme with transparent elements for GTK 2,3,4 and Gnome-Shell" "$(ofn arc-gtk-theme "${AURPKGS[*]}")"
+		upd72020x-fw "Renesas uPD720201 / uPD720202 USB 3.0 chipsets firmware" "$(ofn upd72020x-fw "${CURRENT_SELECTIONS[*]}")" \
+		wd719x-firmware "Firmware for Western Digital WD7193, WD7197, and WD7296 SCSI cards" "$(ofn wd719x-firmware "${CURRENT_SELECTIONS[*]}")" \
+		arc-gtk-theme "A flat theme with transparent elements for GTK 2,3,4 and Gnome-Shell" "$(ofn arc-gtk-theme "${CURRENT_SELECTIONS[*]}")"
 
 
 
 
-	if [[ $AURPKGS ]]; then
-		for i in $AURPKGS; do
-			[[ ${AUR_PKGS[*]} != *"$i"* ]] && AUR_PKGS+=("$i")
-		done
-	fi
+    AUR_PKGS=("${AURPKGS[@]}")
 
 	return 0
 }
